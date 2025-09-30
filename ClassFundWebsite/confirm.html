@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ยืนยันข้อมูล</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .info-group { text-align: left; margin-bottom: 20px; }
+        .info-group p { font-size: 1.2em; color: #555; margin: 10px 0; }
+        .info-group strong { color: #2e7d32; }
+        .button-group { display: flex; justify-content: space-between; margin-top: 25px; }
+        .button-group button { width: 48%; padding: 15px; font-size: 1.1em; }
+        #backButton { background-color: #f44336; box-shadow: 0 4px #d32f2f; }
+        #backButton:hover { background-color: #e57373; box-shadow: 0 6px #c62828; }
+        #backButton:active { box-shadow: 0 2px #b71c1c; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ยืนยันข้อมูล</h1>
+        <p>โปรดตรวจสอบข้อมูลก่อนดำเนินการต่อ:</p>
+        <div class="info-group">
+            <p><strong>เลขที่:</strong> <span id="displayStudentId"></span></p>
+            <p><strong>วันที่:</strong> <span id="displayPaymentDate"></span></p>
+        </div>
+        <div class="button-group">
+            <button id="backButton">ย้อนกลับ</button>
+            <button id="nextButton">ถัดไป</button>
+        </div>
+    </div>
+    <script>
+        const studentId = localStorage.getItem('studentId');
+        const paymentDate = localStorage.getItem('paymentDate');
+        document.getElementById('displayStudentId').textContent = studentId;
+        document.getElementById('displayPaymentDate').textContent = paymentDate;
+
+        // นี่คือส่วนที่แก้ไขเพื่อส่งข้อมูลไปยัง Google Sheet ของคุณ
+        const googleAppsScriptUrl = "https://script.google.com/macros/s/AKfycbzTDagdMw4hVp4wjrjr-r3zs2pyfnzrwO9JXZ3unh-p3kjJQX2-UCAcXHIrekX5Z0_9Vw/exec"; 
+        
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.location.href = 'index.html';
+        });
+        
+        document.getElementById('nextButton').addEventListener('click', function() {
+            const formData = {
+                studentId: studentId,
+                paymentDate: paymentDate
+            };
+            
+            // ส่งข้อมูลไปยัง Google Apps Script
+            fetch(googleAppsScriptUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams(formData)
+            }).then(response => {
+                // เมื่อส่งข้อมูลเสร็จแล้ว ให้เปลี่ยนหน้า
+                document.body.classList.add('fade-out');
+                setTimeout(() => {
+                    window.location.href = 'payment.html';
+                }, 500);
+            }).catch(error => {
+                console.error('Error:', error);
+                alert('เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองอีกครั้ง');
+            });
+        });
+    </script>
+</body>
+</html>
