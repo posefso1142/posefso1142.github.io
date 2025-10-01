@@ -1,0 +1,191 @@
+/* การใช้ฟอนต์ Itim กับเว็บไซต์ */
+body {
+    font-family: 'Itim', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #b3e5fc, #01579b);
+    margin: 0;
+    transition: background 1s ease;
+    padding: 20px;
+}
+
+/* ส่วนของ UX/UI และ Animation */
+.container {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 100%;
+    max-width: 550px;
+    animation: zoomInFade 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    opacity: 0;
+    backdrop-filter: blur(5px);
+}
+
+@keyframes zoomInFade {
+    from { opacity: 0; transform: scale(0.9) translateY(30px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+h1 {
+    color: #0d47a1;
+    margin-bottom: 25px;
+    font-size: 3em;
+    font-weight: bold;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+    animation: bounceIn 1s ease-out forwards;
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.1); opacity: 1; }
+    80% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}
+
+.form-group {
+    margin-bottom: 25px;
+    text-align: left;
+    animation: slideInRight 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    opacity: 0;
+    animation-delay: 0.5s;
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    color: #1976d2;
+    font-weight: 700;
+    font-size: 1.2em;
+}
+
+input[type="number"],
+input[type="date"],
+input[type="file"] {
+    width: 100%;
+    padding: 15px;
+    border: 3px solid #64b5f6;
+    border-radius: 12px;
+    box-sizing: border-box;
+    font-size: 1.2em;
+    font-family: 'Itim', sans-serif;
+    transition: all 0.4s ease-in-out;
+    background-color: #e3f2fd;
+}
+
+input[type="number"]:focus,
+input[type="date"]:focus,
+input[type="file"]:focus {
+    border-color: #03a9f4;
+    box-shadow: 0 0 15px rgba(3, 169, 244, 0.6);
+    outline: none;
+    transform: scale(1.02);
+}
+
+.button-group,
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+    animation: floatUp 1.2s ease-out forwards;
+    opacity: 0;
+    animation-delay: 1s;
+}
+
+@keyframes floatUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+button {
+    flex: 1;
+    padding: 15px 30px;
+    background-color: #03a9f4;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1.2em;
+    font-weight: bold;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    box-shadow: 0 8px #0288d1;
+    position: relative;
+    overflow: hidden;
+}
+
+button:hover {
+    background-color: #4fc3f7;
+    transform: scale(1.05);
+    box-shadow: 0 10px #0277bd;
+}
+
+button:active {
+    transform: translateY(1px);
+    box-shadow: 0 4px #01579b;
+}
+
+/* เพิ่มการตกแต่งสำหรับปุ่มย้อนกลับ */
+#backButton {
+    background-color: #ef5350;
+    box-shadow: 0 8px #d32f2f;
+}
+
+#backButton:hover {
+    background-color: #e57373;
+    transform: scale(1.05);
+    box-shadow: 0 10px #c62828;
+}
+
+#backButton:active {
+    box-shadow: 0 4px #b71c1c;
+}
+
+/* การรองรับทุกอุปกรณ์ */
+@media (max-width: 768px) {
+    .container {
+        padding: 25px;
+    }
+    h1 {
+        font-size: 2em;
+    }
+    button {
+        font-size: 1em;
+    }
+}
+
+/* ส่วนของ QR Code */
+.qr-box {
+    border: 3px dashed #64b5f6;
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 20px;
+}
+
+/* ส่วนของข้อความในหน้า Thank you */
+h2 {
+    color: #0d47a1;
+    font-size: 2em;
+    margin-top: 15px;
+}
+
+p {
+    color: #555;
+    font-size: 1.2em;
+    line-height: 1.6em;
+}
+
+/* เปลี่ยนสีตัวอักษร "5 บาท" จากสีเขียวเป็นสีฟ้า */
+.amount {
+    color: #0d47a1;
+    font-size: 1.5em;
+    font-weight: bold;
+}

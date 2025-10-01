@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ยืนยันข้อมูล</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .info-group { text-align: left; margin-bottom: 20px; }
+        .info-group p { font-size: 1.2em; color: #555; margin: 10px 0; }
+        .info-group strong { color: #0d47a1; } /* เปลี่ยนสีให้เข้ากับธีมใหม่ */
+        .button-group { display: flex; justify-content: space-between; margin-top: 25px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ยืนยันข้อมูล</h1>
+        <p>โปรดตรวจสอบข้อมูลและอัปโหลดสลิป:</p>
+        <div class="info-group">
+            <p><strong>เลขที่:</strong> <span id="displayStudentId"></span></p>
+            <p><strong>วันที่:</strong> <span id="displayPaymentDate"></span></p>
+        </div>
+        <div class="form-group">
+            <label for="slipUpload">อัปโหลดสลิป:</label>
+            <input type="file" id="slipUpload" accept="image/*" required>
+        </div>
+        <div class="button-group">
+            <button id="backButton">ย้อนกลับ</button>
+            <button id="nextButton">ยืนยัน</button>
+        </div>
+    </div>
+    <script>
+        const studentId = localStorage.getItem('studentId');
+        const paymentDate = localStorage.getItem('paymentDate');
+        document.getElementById('displayStudentId').textContent = studentId;
+        document.getElementById('displayPaymentDate').textContent = paymentDate;
+
+        const googleAppsScriptUrl = "https://script.google.com/macros/s/AKfycbxC1MRYwueTMJ4OXai1gs9zZK0Z__M6ifCLM5_WnFDqXjyt_sLWs0VTclR2EURt3IRosA/exec"; 
+
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.location.href = 'index.html';
+        });
+
+        document.getElementById('nextButton').addEventListener('click', function() {
+            const slipFile = document.getElementById('slipUpload').files[0];
+            if (!slipFile) {
+                alert('กรุณาอัปโหลดสลิปก่อน');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                const base64Data = reader.result.split(',')[1];
+                const formData = {
+                    studentId: studentId,
+                    paymentDate: paymentDate,
+                    slipData: base64Data,
+                    mimeType: slipFile.type,
+                    fileName: slipFile.name
+                };
+
+                fetch(googleAppsScriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams(formData)
+                }).then(response => {
+                    document.body.classList.add('fade-out');
+                    setTimeout(() => {
+                        window.location.href = 'thankyou.html';
+                    }, 500);
+                }).catch(error => {
+                    console.error('Error:', error);
+                    alert('เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองอีกครั้ง');
+                });
+            };
+            reader.readAsDataURL(slipFile);
+        });
+    </script>
+</body>
+</html>

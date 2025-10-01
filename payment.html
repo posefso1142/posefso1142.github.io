@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>หน้าโอนเงิน</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>หน้าโอนเงิน</h1>
+        <p>โปรดสแกน QR Code เพื่อโอนเงิน:</p>
+        <div class="qr-box">
+            <h2 style="color: #0d47a1;">QR Code สำหรับการโอนเงิน</h2>
+            <img src="my-qr-code.png" alt="QR Code" style="width: 200px; height: 200px;">
+            <p>ยอดเงิน: 5 บาท</p>
+        </div>
+        <div class="button-container">
+            <button id="transferComplete" style="background-color: #03a9f4;">โอนเสร็จสิ้นแล้ว</button>
+        </div>
+    </div>
+    <script>
+        document.getElementById('transferComplete').addEventListener('click', function() {
+            window.location.href = 'confirm.html';
+        });
+    </script>
+</body>
+</html>
