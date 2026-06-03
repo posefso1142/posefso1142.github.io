@@ -19,7 +19,6 @@
 
 * {
     margin: 0; padding: 0; box-sizing: border-box;
-    /* ผสมฟอนต์ Prompt และ Itim ให้แสดงผลร่วมกันได้อย่างลงตัว */
     font-family: 'Itim', 'Prompt', sans-serif; 
     -webkit-tap-highlight-color: transparent;
 }
@@ -54,7 +53,6 @@ p { font-size: clamp(1rem, 3vw, 1.15rem); color: var(--light-text); font-weight:
 .form-group { margin-bottom: 24px; text-align: left; }
 label { display: block; font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; color: var(--dark-text); padding-left: 4px; }
 
-/* 🌟 ปรับปรุงหน้าตาช่องกรอกข้อมูล (เลขที่ / วันที่) */
 input[type="number"], input[type="date"] {
     width: 100%; height: 54px; padding: 0 16px;
     border: 2px solid rgba(0, 0, 0, 0.15);
@@ -65,7 +63,6 @@ input[type="number"], input[type="date"] {
 }
 input:focus { border-color: var(--ios-blue); background: #ffffff; transform: scale(1.02); }
 
-/* 🌟 สไตล์ปุ่มกดหลัก */
 .button-container, .button-group { display: flex; justify-content: center; gap: 14px; margin-top: 32px; width: 100%; }
 
 button, .btn-primary, type="submit" {
@@ -78,6 +75,54 @@ button, .btn-primary, type="submit" {
 }
 button:hover { transform: scale(1.04); filter: brightness(1.1); }
 button:active { transform: scale(0.96); }
+button:disabled { background: #aeaeae; cursor: not-allowed; opacity: 0.6; transform: none !important; }
+
+/* ปุ่มย้อนกลับสีขาวขอบชมพู */
+#backButton {
+    background: #ffffff; color: var(--ios-pink);
+    border: 2px solid rgba(255, 45, 85, 0.4);
+}
+#backButton:hover { background: rgba(255, 45, 85, 0.1); }
+
+/* 🌟 โครงสร้างหน้าสรุปข้อมูล (info-group) */
+.info-group { 
+    background: rgba(255, 255, 255, 0.8); 
+    border: 2px solid rgba(0, 0, 0, 0.06); 
+    border-radius: var(--radius-ios-md); 
+    padding: 20px; 
+    margin-bottom: 24px; 
+    text-align: left; 
+}
+.info-group p { margin-bottom: 10px; font-size: 1.1rem; color: var(--dark-text); font-weight: 600; }
+.info-group p:last-child { margin-bottom: 0; }
+.info-group strong { color: var(--ios-purple); width: 80px; font-weight: 700; display: inline-block; }
+
+/* 🌟 กล่องอัปโหลดรูปภาพสลิป */
+.upload-card {
+    background: rgba(255, 255, 255, 0.85); 
+    border: 3px dashed var(--ios-blue);
+    border-radius: var(--radius-ios-md); 
+    padding: 30px 20px; 
+    cursor: pointer;
+    position: relative; 
+    transition: var(--ios-spring);
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;
+    min-height: 180px; 
+    margin-top: 12px;
+}
+.upload-card:hover { border-style: solid; background: #ffffff; transform: scale(1.02); box-shadow: 0 10px 25px rgba(0, 122, 255, 0.15); }
+#slipUpload { position: absolute; width: 100%; height: 100%; top: 0; left: 0; opacity: 0; cursor: pointer; z-index: 10; }
+.upload-icon { font-size: 3rem; margin-bottom: 8px; transition: transform 0.3s ease; }
+.upload-card:hover .upload-icon { transform: scale(1.15) rotate(5deg); }
+.upload-hint { font-size: 1.1rem; font-weight: 800; color: var(--dark-text); }
+.upload-sub-hint { font-size: 0.9rem; color: var(--light-text); margin-top: 4px; font-weight: 500; }
+
+/* กล่องพรีวิวรูป */
+.preview-container { display: none; width: 100%; max-width: 140px; margin-top: 12px; border-radius: 14px; overflow: hidden; border: 3px solid #ffffff; box-shadow: 0 8px 20px rgba(0,0,0,0.15); z-index: 5; }
+#imagePreview { width: 100%; height: auto; display: block; }
 
 /* 🌟 สไตล์กล่อง QR Code (ในหน้า payment.html) */
 .qr-box {
@@ -86,24 +131,15 @@ button:active { transform: scale(0.96); }
     padding: 32px 20px; 
     border-radius: var(--radius-ios-lg); 
     margin: 24px 0;
-    box-shadow: inset 0 0 10px rgba(0, 122, 255, 0.05);
 }
-.qr-box h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: 16px; }
-.qr-box img { max-width: 100%; height: auto; border-radius: 20px; transition: var(--ios-spring); box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
+.qr-box img { max-width: 100%; height: auto; border-radius: 20px; transition: var(--ios-spring); }
 .qr-box img:hover { transform: scale(1.04); }
+.amount { display: inline-block; font-size: 2.3rem; font-weight: 800; color: var(--ios-blue); margin-top: 14px; }
 
-/* สไตล์แสดงยอดเงินขนาดใหญ่ชัดเจน */
-.amount { 
-    display: inline-block; 
-    font-size: 2.3rem; 
-    font-weight: 800; 
-    color: var(--ios-blue); 
-    margin-top: 14px; 
-}
-
-/* 📱 ตกแต่งสำหรับหน้าจอมือถือ */
 @media (max-width: 480px) {
     body { padding: 12px; padding-top: 40px; }
     .container { max-width: 100%; border-radius: 28px; padding: 28px 22px; }
-    .button-container { flex-direction: column; gap: 12px; }
+    .button-container, .button-group { flex-direction: column; gap: 12px; }
+    .button-group button { order: 1; } 
+    #backButton { order: 2; }
 }
