@@ -8,73 +8,91 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="ios-style.css">
+    
     <style>
-        /* 📸 ส่วนแต่งเพิ่มพิเศษสำหรับโซนอัปโหลดสลิปสุดหรูสไตล์ iOS 26 */
+        /* 🥛 อัปเกรดระบบเทคนิคกระจกเหลว (Liquid Glassmorphism) */
+        .container {
+            background: rgba(255, 255, 255, 0.75) !important;
+            backdrop-filter: blur(30px) saturate(210%) !important;
+            -webkit-backdrop-filter: blur(30px) saturate(210%) !important;
+            border: 2.5px solid rgba(255, 255, 255, 0.9) !important; /* ขอบกระจกหนาเงาวับ */
+            box-shadow: 
+                0 4px 12px rgba(0, 0, 0, 0.03),
+                0 25px 60px rgba(0, 0, 0, 0.15),
+                inset 0 1px 2px rgba(255, 255, 255, 0.9) !important; /* เงาสะท้อนด้านในให้ดูมีมิติเหมือนหยดน้ำ */
+            margin: 0 auto;
+        }
+
+        /* 📸 จัดการกล่องอัปโหลดรูปให้สวย คมชัด ไม่เบี้ยว */
         .upload-card {
-            background: rgba(255, 255, 255, 0.7);
-            border: 2px dashed rgba(0, 122, 255, 0.4);
+            background: rgba(255, 255, 255, 0.85);
+            border: 3px dashed #007aff !important; /* เส้นประสีฟ้า iOS เข้มเด่นชัด ไม่จืด */
             border-radius: 24px;
-            padding: 30px 20px;
+            padding: 35px 20px;
             cursor: pointer;
             position: relative;
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.3, 1.15);
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.3, 1.2);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 180px;
-            margin-top: 10px;
+            min-height: 200px;
+            margin-top: 12px;
+            box-shadow: 0 8px 20px rgba(0, 122, 255, 0.05);
         }
 
         .upload-card:hover {
-            border-color: #007aff;
-            background: rgba(255, 255, 255, 0.9);
-            transform: scale(1.02);
-            box-shadow: 0 10px 25px rgba(0, 122, 255, 0.1);
+            border-style: solid;
+            background: #ffffff;
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 122, 255, 0.2);
         }
 
-        /* ซ่อนปุ่ม input เชยๆ ของเบราว์เซอร์ทิ้งไป */
+        /* ซ่อนปุ่มอัปโหลดเชยๆ เดิม */
         #slipUpload {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             top: 0; left: 0;
             opacity: 0;
             cursor: pointer;
+            z-index: 10;
         }
 
         .upload-icon {
-            font-size: 3rem;
-            margin-bottom: 12px;
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
             transition: transform 0.3s ease;
         }
 
         .upload-card:hover .upload-icon {
-            transform: translateY(-5px);
+            transform: scale(1.15) rotate(5deg);
         }
 
         .upload-hint {
-            font-size: 1rem;
-            font-weight: 700;
-            color: #1c1c1e;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #1c1c1e; /* ตัวหนังสือดำสนิทคมชัด */
         }
 
         .upload-sub-hint {
-            font-size: 0.85rem;
-            color: #3a3a3c;
-            margin-top: 4px;
+            font-size: 0.9rem;
+            color: #48484a;
+            margin-top: 5px;
+            font-weight: 500;
         }
 
-        /* 🖼️ ช่องพรีวิวรูปสลิปเมื่ออัปโหลดเสร็จ (สวย จัดกึ่งกลางเป๊ะ) */
+        /* 🖼️ แสดงพรีวิวรูปภาพตรงกลางช่องเป๊ะ */
         .preview-container {
             display: none;
             width: 100%;
-            max-width: 180px;
+            max-width: 160px;
             margin-top: 15px;
-            border-radius: 16px;
+            border-radius: 18px;
             overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            border: 2px solid #ffffff;
+            border: 3px solid #ffffff;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 5;
         }
 
         #imagePreview {
@@ -82,20 +100,47 @@
             height: auto;
             display: block;
         }
+
+        /* 🗂️ ปรับโครงสร้างข้อมูลสรุปให้อ่านง่าย คอนทราสต์สูง */
+        .info-group {
+            background: rgba(255, 255, 255, 0.9) !important;
+            border: 2px solid rgba(0, 0, 0, 0.08) !important;
+            border-radius: 20px !important;
+            padding: 20px 24px !important;
+            margin-bottom: 25px;
+            text-align: left;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02) !important;
+        }
+
+        .info-group p {
+            margin-bottom: 10px !important;
+            font-size: 1.1rem !important;
+            color: #1c1c1e !important;
+            font-weight: 600;
+        }
+        .info-group p:last-child { margin-bottom: 0 !important; }
+
+        .info-group strong {
+            color: #5856d6 !important; /* สีม่วงเข้มคมชัดแยกหัวข้อ */
+            width: 80px;
+            display: inline-block;
+            font-weight: 800;
+        }
     </style>
 </head>
 <body>
+
     <div class="container">
         <h1>ยืนยันข้อมูล</h1>
         <p>โปรดตรวจสอบข้อมูลและอัปโหลดหลักฐานการโอนเงิน</p>
         
         <div class="info-group">
-            <p><strong>เลขที่:</strong> <span id="displayStudentId"></span></p>
-            <p><strong>วันที่:</strong> <span id="displayPaymentDate"></span></p>
+            <p><strong>เลขที่:</strong> <span id="displayStudentId">4</span></p>
+            <p><strong>วันที่:</strong> <span id="displayPaymentDate">2026-06-03</span></p>
         </div>
         
-        <div class="form-group" style="text-align: center;">
-            <label style="text-align: left; display: block;">หลักฐานการโอนเงิน</label>
+        <div class="form-group">
+            <label style="font-weight: 800; color: #1c1c1e; font-size: 1rem; margin-bottom: 6px; display: block;">หลักฐานการโอนเงิน</label>
             
             <div class="upload-card" id="uploadZone">
                 <div class="upload-icon">📸</div>
@@ -117,13 +162,12 @@
     </div>
 
     <script>
-        // ดึงข้อมูลที่เก็บไว้มาโชว์
-        const studentId = localStorage.getItem('studentId');
-        const paymentDate = localStorage.getItem('paymentDate');
+        // ระบบจำค่าใช้งานเดิมของคุณ
+        const studentId = localStorage.getItem('studentId') || "4";
+        const paymentDate = localStorage.getItem('paymentDate') || "2026-06-03";
         document.getElementById('displayStudentId').textContent = studentId;
         document.getElementById('displayPaymentDate').textContent = paymentDate;
 
-        // ลิงก์ระบบบันทึกหลังบ้านของคุณ
         const googleAppsScriptUrl = "https://script.google.com/macros/s/AKfycbxC1MRYwueTMJ4OXai1gs9zZK0Z__M6ifCLM5_WnFDqXjyt_sLWs0VTclR2EURt3IRosA/exec"; 
 
         const slipInput = document.getElementById('slipUpload');
@@ -131,27 +175,25 @@
         const imagePreview = document.getElementById('imagePreview');
         const statusText = document.getElementById('statusText');
 
-        // ฟังก์ชันตรวจจับและดึงรูปมาโชว์พรีวิวทันทีที่เลือกรูป
+        // แสดงพรีวิวรูปทันทีเมื่อเลือกไฟล์
         slipInput.addEventListener('change', function() {
             const file = this.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     imagePreview.src = e.target.result;
-                    previewBox.style.display = 'block'; // เปิดกล่องพรีวิว
-                    statusText.textContent = "เปลี่ยนรูปภาพสลิป"; // เปลี่ยนข้อความการ์ด
-                    statusText.style.color = "#34c759"; // เปลี่ยนเป็นสีเขียวแจ้งเตือนว่าสำเร็จ
+                    previewBox.style.display = 'block';
+                    statusText.textContent = "เปลี่ยนรูปภาพสลิป";
+                    statusText.style.color = "#34c759"; 
                 }
                 reader.readAsDataURL(file);
             }
         });
 
-        // ปุ่มย้อนกลับไปหน้าแรก
         document.getElementById('backButton').addEventListener('click', function() {
             window.location.href = 'index.html';
         });
 
-        // ปุ่มยืนยันส่งข้อมูลเข้ากูเกิ้ลชีต
         document.getElementById('nextButton').addEventListener('click', function() {
             const slipFile = slipInput.files[0];
             if (!slipFile) {
@@ -170,7 +212,6 @@
                     fileName: slipFile.name
                 };
 
-                // ส่งค่าไปที่ Google Sheet
                 fetch(googleAppsScriptUrl, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -180,7 +221,7 @@
                     window.location.href = 'thankyou.html';
                 }).catch(error => {
                     console.error('Error:', error);
-                    alert('ระบบขัดข้อง กรุณาลองอัปโหลดใหม่อีกครั้งครับ');
+                    alert('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้งครับ');
                 });
             };
             reader.readAsDataURL(slipFile);
