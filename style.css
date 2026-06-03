@@ -52,15 +52,23 @@ p { font-size: clamp(0.95rem, 2.8vw, 1.05rem); color: var(--light-text); font-we
 .form-group { margin-bottom: 24px; text-align: left; }
 label { display: block; font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; color: var(--dark-text); padding-left: 4px; }
 
-input[type="number"], input[type="date"] {
+/* 🛠️ จุดแก้ไขที่ 1: ล็อคขนาดกล่องด้วย box-sizing ให้แน่นหนาครอบคลุม input ทุกประเภท */
+input[type="number"], input[type="date"], input {
     width: 100%; height: 54px; padding: 0 16px;
     border: 2px solid rgba(0, 0, 0, 0.15) !important;
     border-radius: var(--radius-ios-md);
     font-size: 1rem; font-weight: 600; color: var(--dark-text);
     background: rgba(255, 255, 255, 0.8) !important;
     outline: none; transition: var(--ios-spring);
+    box-sizing: border-box !important; 
 }
-input:focus { border-color: var(--ios-blue) !important; background: #ffffff !important; transform: scale(1.02); }
+
+/* 🛠️ จุดแก้ไขที่ 2: ถอดรหัส scale(1.02) ออกเฉพาะตอนโฟกัสบนมือถือ เพื่อป้องกันการดันขอบการ์ดพัง */
+input:focus { 
+    border-color: var(--ios-blue) !important; 
+    background: #ffffff !important; 
+    transform: none !important; 
+}
 
 /* 🚀 จัดการสไตล์ชุดปุ่มกดหลักแบบมัดรวม (สมูทสปริง ไม่เหลี่ยม ไม่เบี้ยว) */
 .button-group, .button-container { display: flex; justify-content: center; gap: 14px; margin-top: 32px; width: 100%; }
