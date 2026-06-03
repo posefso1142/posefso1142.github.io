@@ -1,144 +1,162 @@
 /* ==========================================================================
-   iOS 26 ULTRA GLASSMORPHIC - HIGH CONTRAST VER. (style.css)
+   iOS 26 DARK & HIGH CONTRAST PREMIUM EDITION (style.css)
    ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Itim&family=Prompt:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-    --ios-blue: #007aff;
-    --ios-purple: #5856d6;
-    --ios-pink: #ff2d55;
-    --ios-green: #34c759;
-    --dark-text: #1c1c1e;
-    --light-text: #3a3a3c;
-    --glass-bg: rgba(255, 255, 255, 0.75);
-    --glass-border: rgba(255, 255, 255, 0.9);
-    --radius-ios-lg: 32px;
-    --radius-ios-md: 18px;
-    --ios-spring: all 0.5s cubic-bezier(0.25, 1, 0.3, 1.15);
+    /* โทนสีเข้มแบบโมเดิร์น (Premium Dark Mode) */
+    --bg-gradient: linear-gradient(135deg, #0b0f19 0%, #111827 50%, #1f1a3a 100%);
+    --card-bg: rgba(22, 28, 45, 0.75);
+    --card-border: rgba(255, 255, 255, 0.12);
+    
+    /* สีของระบบ (High Contrast iOS Colors) */
+    --ios-blue: #0a84ff;
+    --ios-purple: #bf5af2;
+    --ios-pink: #ff375f;
+    --ios-green: #30d158;
+    
+    /* ตัวหนังสือ */
+    --text-main: #ffffff;
+    --text-muted: #9aa5b1;
+    
+    /* แอนิเมชันปุ่มสปริงนุ่มๆ */
+    --ios-spring: all 0.4s cubic-bezier(0.25, 1, 0.3, 1.15);
 }
 
 * {
     margin: 0; padding: 0; box-sizing: border-box;
-    font-family: 'Itim', 'Prompt', sans-serif; 
+    font-family: 'Prompt', sans-serif !important; /* บังคับให้เป็น Prompt ทั้งเว็บ */
     -webkit-tap-highlight-color: transparent;
 }
 
-html, body { width: 100%; min-height: 100vh; overflow-x: hidden; }
+html, body { 
+    width: 100%; 
+    min-height: 100vh; 
+    overflow-x: hidden; 
+    background: var(--bg-gradient);
+}
 
 body {
     display: flex; justify-content: center; align-items: center;
-    background: linear-gradient(135deg, #e5efff 0%, #f7e6ff 50%, #fff0f5 100%);
-    padding: clamp(12px, 4vw, 32px);
+    padding: clamp(16px, 4vw, 32px);
 }
 
+/* 🧱 กล่องกระจกสุดหรูแบบมินิมอลโมเดิร์น */
 .container {
-    background: var(--glass-bg);
-    backdrop-filter: blur(25px) saturate(200%);
-    -webkit-backdrop-filter: blur(25px) saturate(200%);
-    border: 2px solid var(--glass-border);
-    border-radius: var(--radius-ios-lg);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.04), 0 20px 40px rgba(0, 0, 0, 0.1);
-    padding: clamp(28px, 6vw, 48px);
-    width: 100%; max-width: 480px; text-align: center;
-    animation: iosIntro 0.75s cubic-bezier(0.25, 1, 0.3, 1) forwards;
+    background: var(--card-bg);
+    backdrop-filter: blur(30px) saturate(210%);
+    -webkit-backdrop-filter: blur(30px) saturate(210%);
+    border: 1px solid var(--card-border);
+    border-radius: 28px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), 0 25px 50px rgba(0, 0, 0, 0.4);
+    padding: clamp(32px, 6vw, 44px);
+    width: 100%; max-width: 440px; text-align: center;
+    animation: iosIntro 0.6s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
 }
 
 @keyframes iosIntro {
-    from { opacity: 0; transform: translateY(40px) scale(0.94); }
+    from { opacity: 0; transform: translateY(30px) scale(0.96); }
     to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-h1 { font-size: clamp(1.8rem, 5.5vw, 2.4rem); font-weight: 800; color: var(--dark-text); margin-bottom: 8px; }
-p { font-size: clamp(1rem, 3vw, 1.15rem); color: var(--light-text); font-weight: 500; line-height: 1.5; margin-bottom: 24px; }
-.form-group { margin-bottom: 24px; text-align: left; }
-label { display: block; font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; color: var(--dark-text); padding-left: 4px; }
+h1 { font-size: clamp(1.6rem, 5vw, 2.1rem); font-weight: 700; color: var(--text-main); margin-bottom: 8px; letter-spacing: -0.5px; }
+p { font-size: clamp(0.95rem, 2.8vw, 1.05rem); color: var(--text-muted); font-weight: 400; line-height: 1.6; margin-bottom: 28px; }
 
+.form-group { margin-bottom: 24px; text-align: left; }
+label { display: block; font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; color: var(--text-main); padding-left: 4px; }
+
+/* ✏️ ช่องกรอกข้อมูลสุดเท่แบบ iOS Dark */
 input[type="number"], input[type="date"] {
-    width: 100%; height: 54px; padding: 0 16px;
-    border: 2px solid rgba(0, 0, 0, 0.15);
-    border-radius: var(--radius-ios-md);
-    font-size: 1.1rem; font-weight: 600; color: var(--dark-text);
-    background: rgba(255, 255, 255, 0.8);
+    width: 100%; height: 54px; padding: 0 18px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    font-size: 1.05rem; font-weight: 500; color: #ffffff;
+    background: rgba(255, 255, 255, 0.06);
     outline: none; transition: var(--ios-spring);
 }
-input:focus { border-color: var(--ios-blue); background: #ffffff; transform: scale(1.02); }
+input:focus { 
+    border-color: var(--ios-blue); 
+    background: rgba(255, 255, 255, 0.12); 
+    box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.25);
+}
 
+/* 📱 ปรับแต่งไอคอนปฏิทินให้เป็นสีขาว */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1); cursor: pointer;
+}
+
+/* 🚀 ปุ่มกดแบบสมูทสุดๆ (UI/UX พรีเมียม) */
 .button-container, .button-group { display: flex; justify-content: center; gap: 14px; margin-top: 32px; width: 100%; }
 
 button, .btn-primary, type="submit" {
     flex: 1; width: 100%; height: 54px;
     background: linear-gradient(135deg, var(--ios-blue) 0%, var(--ios-purple) 100%);
-    color: #ffffff; border: none; border-radius: var(--radius-ios-md);
-    font-size: 1.15rem; font-weight: 700; cursor: pointer;
+    color: #ffffff; border: none; border-radius: 16px;
+    font-size: 1.05rem; font-weight: 600; cursor: pointer;
     transition: var(--ios-spring);
     display: inline-flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 20px rgba(10, 132, 255, 0.25);
 }
-button:hover { transform: scale(1.04); filter: brightness(1.1); }
-button:active { transform: scale(0.96); }
-button:disabled { background: #aeaeae; cursor: not-allowed; opacity: 0.6; transform: none !important; }
+button:hover { transform: translateY(-2px); filter: brightness(1.15); box-shadow: 0 12px 24px rgba(10, 132, 255, 0.35); }
+button:active { transform: scale(0.95) translateY(0); filter: brightness(0.9); } /* กดแล้วยุบตัวทันที */
+button:disabled { background: #3a3a3c; color: #727274; cursor: not-allowed; transform: none !important; box-shadow: none; }
 
-/* ปุ่มย้อนกลับสีขาวขอบชมพู */
-#backButton {
-    background: #ffffff; color: var(--ios-pink);
-    border: 2px solid rgba(255, 45, 85, 0.4);
+/* ปุ่มย้อนกลับ */
+#backButton, #back-to-home {
+    background: rgba(255, 255, 255, 0.08) !important; 
+    color: var(--ios-pink) !important;
+    border: 1px solid rgba(255, 55, 95, 0.3) !important;
+    box-shadow: none;
 }
-#backButton:hover { background: rgba(255, 45, 85, 0.1); }
+#backButton:hover, #back-to-home:hover { background: rgba(255, 55, 95, 0.1) !important; box-shadow: 0 8px 20px rgba(255, 55, 95, 0.15); }
 
-/* 🌟 โครงสร้างหน้าสรุปข้อมูล (info-group) */
+/* 📊 หน้าสรุปข้อมูล (info-group) */
 .info-group { 
-    background: rgba(255, 255, 255, 0.8); 
-    border: 2px solid rgba(0, 0, 0, 0.06); 
-    border-radius: var(--radius-ios-md); 
-    padding: 20px; 
-    margin-bottom: 24px; 
-    text-align: left; 
+    background: rgba(255, 255, 255, 0.04); 
+    border: 1px solid rgba(255, 255, 255, 0.08); 
+    border-radius: 18px; 
+    padding: 22px; margin-bottom: 26px; text-align: left; 
 }
-.info-group p { margin-bottom: 10px; font-size: 1.1rem; color: var(--dark-text); font-weight: 600; }
+.info-group p { margin-bottom: 12px; font-size: 1.05rem; color: var(--text-main); font-weight: 500; }
 .info-group p:last-child { margin-bottom: 0; }
-.info-group strong { color: var(--ios-purple); width: 80px; font-weight: 700; display: inline-block; }
+.info-group strong { color: var(--ios-blue); width: 80px; font-weight: 600; display: inline-block; }
 
-/* 🌟 กล่องอัปโหลดรูปภาพสลิป */
+/* 📸 หน้าต่างอัปโหลดหลักฐานสลิป */
 .upload-card {
-    background: rgba(255, 255, 255, 0.85); 
-    border: 3px dashed var(--ios-blue);
-    border-radius: var(--radius-ios-md); 
-    padding: 30px 20px; 
-    cursor: pointer;
-    position: relative; 
-    transition: var(--ios-spring);
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    justify-content: center;
-    min-height: 180px; 
-    margin-top: 12px;
+    background: rgba(255, 255, 255, 0.03); 
+    border: 2px dashed rgba(10, 132, 255, 0.4);
+    border-radius: 20px; padding: 32px 20px; cursor: pointer;
+    position: relative; transition: var(--ios-spring);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 180px; margin-top: 12px;
 }
-.upload-card:hover { border-style: solid; background: #ffffff; transform: scale(1.02); box-shadow: 0 10px 25px rgba(0, 122, 255, 0.15); }
+.upload-card:hover { border-style: solid; border-color: var(--ios-blue); background: rgba(10, 132, 255, 0.05); transform: translateY(-2px); }
 #slipUpload { position: absolute; width: 100%; height: 100%; top: 0; left: 0; opacity: 0; cursor: pointer; z-index: 10; }
-.upload-icon { font-size: 3rem; margin-bottom: 8px; transition: transform 0.3s ease; }
-.upload-card:hover .upload-icon { transform: scale(1.15) rotate(5deg); }
-.upload-hint { font-size: 1.1rem; font-weight: 800; color: var(--dark-text); }
-.upload-sub-hint { font-size: 0.9rem; color: var(--light-text); margin-top: 4px; font-weight: 500; }
+.upload-icon { font-size: 2.8rem; margin-bottom: 10px; }
+.upload-hint { font-size: 1.05rem; font-weight: 600; color: var(--text-main); }
+.upload-sub-hint { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
 
-/* กล่องพรีวิวรูป */
-.preview-container { display: none; width: 100%; max-width: 140px; margin-top: 12px; border-radius: 14px; overflow: hidden; border: 3px solid #ffffff; box-shadow: 0 8px 20px rgba(0,0,0,0.15); z-index: 5; }
+/* ตัวอย่างรูปที่อัปโหลด */
+.preview-container { display: none; width: 100%; max-width: 150px; margin-top: 15px; border-radius: 12px; overflow: hidden; border: 2px solid rgba(255,255,255,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 5; }
 #imagePreview { width: 100%; height: auto; display: block; }
 
-/* 🌟 สไตล์กล่อง QR Code (ในหน้า payment.html) */
+/* 💸 กล่อง QR Code */
 .qr-box {
-    background: rgba(255, 255, 255, 0.8); 
-    border: 3px dashed var(--ios-blue);
-    padding: 32px 20px; 
-    border-radius: var(--radius-ios-lg); 
-    margin: 24px 0;
+    background: rgba(255, 255, 255, 0.04); border: 2px dashed var(--ios-blue);
+    padding: 30px 20px; border-radius: 24px; margin: 24px 0;
 }
-.qr-box img { max-width: 100%; height: auto; border-radius: 20px; transition: var(--ios-spring); }
-.qr-box img:hover { transform: scale(1.04); }
-.amount { display: inline-block; font-size: 2.3rem; font-weight: 800; color: var(--ios-blue); margin-top: 14px; }
+.qr-box img { max-width: 100%; height: auto; border-radius: 16px; border: 4px solid #ffffff; margin: 15px 0; }
+.amount { display: inline-block; font-size: 2.4rem; font-weight: 700; color: var(--ios-green); }
 
+/* ⏱️ หน้านับถอยหลังความสำเร็จ */
+.success-icon { font-size: 4.5rem; margin-bottom: 15px; }
+.countdown-text { font-size: 0.9rem; color: var(--text-muted); margin-top: 25px; background: rgba(255,255,255,0.05); padding: 10px 20px; border-radius: 30px; display: inline-block; }
+.countdown-num { color: var(--ios-purple); font-weight: 700; }
+
+/* 📱 Mobile Responsive */
 @media (max-width: 480px) {
-    body { padding: 12px; padding-top: 40px; }
-    .container { max-width: 100%; border-radius: 28px; padding: 28px 22px; }
+    body { padding: 14px; }
+    .container { padding: 28px 20px; border-radius: 24px; }
     .button-container, .button-group { flex-direction: column; gap: 12px; }
     .button-group button { order: 1; } 
     #backButton { order: 2; }
