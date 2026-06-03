@@ -1,36 +1,39 @@
 /* ==========================================================================
-   SUPER VIBRANT NEON POP UI - 100% RESPONSIVE & ULTRA SMOOTH
-   - สีสันสดใส คอนทราสต์สูงมาก ตัดกันฉูดฉาดแบบโมเดิร์นมินิมอล
-   - ระบบ Fluid Design รองรับ มือถือ ไอแพด คอมพิวเตอร์ ไม่ล้นจอแน่นอน
+   iOS ULTRA GLASSMORPHIC UI (HIGH CONTRAST & SUPER SMOOTH)
+   - 100% Fully Responsive & Anti-Overflow System
+   - กระจกใสแจ๋ว ขอบคมชัด มิติเงาลึก สไตล์ iOS ล่าสุด
+   - สีสันไอคอนและปุ่มเข้มจัดจ้าน (High Contrast) ไม่กลืนกันอ่านง่ายสุดๆ
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&display=swap');
 
 :root {
-    /* คู่สีนีออนคัดสรรพิเศษ สดใสทะลุจอ แต่ดูแพง */
-    --neon-pink: #ff007f;       /* ชมพูฮอตพิงก์สดจัด */
-    --neon-blue: #00e5ff;       /* ฟ้าอิเล็กทริกนีออน */
-    --neon-purple: #7000ff;     /* ม่วงเข้มขับสี */
-    --neon-green: #00ff66;      /* เขียวมะนาวสะท้อนแสง (สำหรับความสำเร็จ) */
+    /* 🎨 สีสันองค์ประกอบระดับ High Saturation (เข้ม สด ชัดเจน ไม่จืดชืด) */
+    --ios-blue: #007aff;        /* ฟ้า iOS มาตรฐาน เข้มคมชัด */
+    --ios-purple: #5856d6;      /* ม่วงเข้มอินดิโก้ */
+    --ios-pink: #ff2d55;        /* ชมพูฮอตพิงก์เข้ม */
+    --ios-green: #34c759;       /* เขียวไอคอนสำเร็จ เข้มสดดึงสายตา */
     
-    /* การไล่เฉดสีปุ่มและหัวข้อ */
-    --vibrant-gradient: linear-gradient(135deg, var(--neon-pink) 0%, #ff5e62 50%, #ff9900 100%);
-    --primary-gradient: linear-gradient(135deg, var(--neon-blue) 0%, #0088ff 50%, var(--neon-purple) 100%);
-    --bg-gradient: linear-gradient(135deg, #ffffff 0%, #f0f3ff 50%, #ffeef8 100%); /* พื้นหลังสว่างสดใสแฝงประกายชมพูฟ้า */
+    /* ระบบตัวอักษรเน้น Contrast สูง */
+    --dark-text: #1c1c1e;       /* ดำสนิทเกือบ 100% สไตล์ iOS Text */
+    --light-text: #3a3a3c;      /* เทาเข้มมากสำหรับคำอธิบาย อ่านง่ายไม่จม */
     
-    --dark-text: #050510;
-    --light-text: #4a5568;
+    /* 🥛 ระบบกระจกใสแจ๋ว (Ultra Glassmorphism) */
+    --glass-bg: rgba(255, 255, 255, 0.65); /* ใสขึ้นเพื่อให้เห็นมิติด้านหลัง */
+    --glass-border: rgba(255, 255, 255, 0.8); /* ขอบกระจกสีขาวคมชัด */
+    --inner-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.9);
     
-    /* กระจกฝ้าขอบสะท้อนแสงนีออนจางๆ */
-    --glass-bg: rgba(255, 255, 255, 0.94);
-    --glass-border: rgba(0, 229, 255, 0.3);
-    
-    --radius-lg: 30px;
-    --radius-md: 18px;
-    --bounce-transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* 🎛️ ความมนและมิติเงาลึก (Depth) */
+    --radius-ios-lg: 32px;      /* มนละมุนแบบ Squircle ของ Apple */
+    --radius-ios-md: 18px;
+    --ios-shadow: 0 4px 30px rgba(0, 0, 0, 0.08), 
+                  0 20px 40px rgba(0, 0, 0, 0.12); /* เงาสองชั้นเพิ่มมิติลอยตัว */
+                  
+    /* 🎬 iOS Fluid Animation Physics (หน่วงนุ่มเด้งสไตล์สปริง) */
+    --ios-spring: all 0.55s cubic-bezier(0.25, 1, 0.3, 1.15);
 }
 
-/* --- รีเซ็ตและบล็อกระบบจอล้น --- */
+/* --- รีเซ็ตค่าและบล็อกการล้นของหน้าจออย่างเด็ดขาด --- */
 * {
     margin: 0;
     padding: 0;
@@ -43,62 +46,61 @@ html, body {
     width: 100%;
     min-height: 100vh;
     min-height: -webkit-fill-available;
-    overflow-x: hidden; /* บล็อกจอเลื่อนซ้ายขวาบนมือถือเด็ดขาด */
+    overflow-x: hidden;
 }
 
 body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: var(--bg-gradient);
+    /* พื้นหลังไล่เฉดสีพาสเทลเพื่อขับให้กล่องกระจกใสตรงกลางลอยเด่นขึ้นมา */
+    background: linear-gradient(135deg, #e5efff 0%, #f7e6ff 50%, #fff0f5 100%);
     background-attachment: fixed;
-    padding: clamp(10px, 4vw, 30px);
+    padding: clamp(12px, 4vw, 32px);
 }
 
-/* --- กล่องข้อมูลหลัก (Vibrant Container) --- */
+/* --- กล่องคอนเทนเนอร์กระจกใสแจ๋ว (Ultra Glass Container) --- */
 .container {
     background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 3px solid var(--glass-border); /* ขอบนีออนฟ้าจางๆ */
-    border-radius: var(--radius-lg);
-    box-shadow: 0 30px 60px rgba(255, 0, 127, 0.15), 0 15px 30px rgba(0, 225, 255, 0.1);
-    padding: clamp(25px, 6vw, 45px);
+    backdrop-filter: blur(25px) saturate(200%); /* เพิ่ม saturate เพื่อให้สีด้านหลังที่ทะลุกระจกดูสดอิ่มขึ้น */
+    -webkit-backdrop-filter: blur(25px) saturate(200%);
+    border: 2px solid var(--glass-border);
+    border-radius: var(--radius-ios-lg);
+    box-shadow: var(--ios-shadow), var(--inner-shadow);
+    padding: clamp(28px, 6vw, 48px);
     width: 100%;
-    max-width: 480px; /* ขนาดลงตัวพอดีเป๊ะทุกคอมพิวเตอร์ */
+    max-width: 480px; /* ฟิตพอดีทั้งคอมและโน้ตบุ๊ค */
     text-align: center;
     
-    /* แอนิเมชันเปิดหน้าเว็บแบบสปริงนุ่มนวลลื่นไหล */
-    animation: bounceIntro 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
+    /* แอนิเมชันตอนเปิดหน้าเว็บ ลอยฟึบขึ้นมาแบบนุ่มนวล */
+    animation: iosIntro 0.75s cubic-bezier(0.25, 1, 0.3, 1) forwards;
 }
 
-@keyframes bounceIntro {
-    from { opacity: 0; transform: translateY(50px) scale(0.9); }
+@keyframes iosIntro {
+    from { opacity: 0; transform: translateY(40px) scale(0.94); }
     to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* --- หัวข้อตัวหนังสือสีจี๊ด --- */
+/* --- หัวข้อและตัวอักษรเข้มคมชัด --- */
 h1 {
-    font-size: clamp(1.8rem, 5.5vw, 2.5rem);
+    font-size: clamp(1.8rem, 5.5vw, 2.4rem);
     font-weight: 800;
-    background: var(--vibrant-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: -1px;
-    margin-bottom: 10px;
+    color: var(--dark-text); /* สีดำเข้มชัดเจน */
+    letter-spacing: -0.8px;
+    margin-bottom: 8px;
 }
 
 p {
-    font-size: clamp(0.95rem, 2.8vw, 1.1rem);
-    color: var(--light-text);
+    font-size: clamp(0.95rem, 2.8vw, 1.05rem);
+    color: var(--light-text); /* เทาเข้มอ่านง่าย */
     font-weight: 500;
-    line-height: 1.6;
-    margin-bottom: 25px;
+    line-height: 1.5;
+    margin-bottom: 28px;
 }
 
-/* --- ฟอร์มอินพุตสไตล์ไฮคอนทราสต์ --- */
+/* --- ฟอร์มอินพุตขอบมนใส --- */
 .form-group {
-    margin-bottom: 22px;
+    margin-bottom: 24px;
     text-align: left;
 }
 
@@ -107,32 +109,33 @@ label {
     font-size: 0.95rem;
     font-weight: 700;
     margin-bottom: 8px;
-    color: var(--neon-purple);
-    letter-spacing: 0.5px;
-    padding-left: 6px;
+    color: var(--dark-text); /* ปรับหัวข้อฟอร์มให้ดำเข้ม */
+    padding-left: 4px;
 }
 
 input[type="number"],
 input[type="date"],
 input[type="file"] {
     width: 100%;
-    height: 56px;
-    padding: 0 18px;
-    border: 3px solid #e2e8f0;
-    border-radius: var(--radius-md);
+    height: 54px;
+    padding: 0 16px;
+    /* อินพุตสไตล์กระจกจมลงไปในเนื้อเว็บ */
+    border: 2px solid rgba(0, 0, 0, 0.08);
+    border-radius: var(--radius-ios-md);
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--dark-text);
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.6);
     outline: none;
-    transition: var(--bounce-transition);
+    transition: var(--ios-spring);
 }
 
-/* ตอนกดช่องกรอกข้อมูล จะเด้งและเปลี่ยนเป็นขอบนีออนชมพูทันที */
+/* ตอนกดคลิกพิมพ์ (Focus): ขอบหนาขึ้น เด้งรับ และเปลี่ยนเป็นสีฟ้า iOS เด่นมาก */
 input:focus {
-    border-color: var(--neon-pink);
-    box-shadow: 0 0 0 5px rgba(255, 0, 127, 0.2);
-    transform: translateY(-3px) scale(1.01);
+    border-color: var(--ios-blue);
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15);
+    transform: scale(1.01);
 }
 
 input[type="file"] {
@@ -140,113 +143,122 @@ input[type="file"] {
     cursor: pointer;
 }
 
-/* --- ปุ่มกดทรงพลัง สีสดกระแทกตา --- */
+/* --- ปุ่มกดสไตล์ Premium Solid iOS --- */
 .button-group,
 .button-container {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin-top: 30px;
+    gap: 14px;
+    margin-top: 32px;
     width: 100%;
 }
 
 button, .btn-primary {
     flex: 1;
     width: 100%;
-    height: 56px;
-    background: var(--primary-gradient); /* เฉดสีฟ้า-ม่วงนีออน */
+    height: 54px;
+    /* ไล่เฉดสีน้ำเงิน-ม่วงแบบเข้มจัดจ้าน กระแทกตาชัดเจน */
+    background: linear-gradient(135deg, var(--ios-blue) 0%, var(--ios-purple) 100%);
     color: #ffffff;
     border: none;
-    border-radius: var(--radius-md);
-    font-size: 1.1rem;
+    border-radius: var(--radius-ios-md);
+    font-size: 1.05rem;
     font-weight: 700;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 12px 25px rgba(0, 229, 255, 0.4);
-    transition: var(--bounce-transition);
+    box-shadow: 0 8px 20px rgba(0, 122, 255, 0.25);
+    transition: var(--ios-spring);
 }
 
+/* เมาส์ชี้หรือกดปุ่ม: หดเด้งตอบรับเหมือนปุ่มกดจริงๆ ใน iOS */
 button:hover {
-    transform: translateY(-5px) scale(1.03);
-    box-shadow: 0 18px 35px rgba(0, 229, 255, 0.6);
-    filter: brightness(1.1);
+    transform: scale(1.03);
+    box-shadow: 0 12px 28px rgba(0, 122, 255, 0.4);
+    filter: brightness(1.05);
 }
 
 button:active {
-    transform: translateY(-1px) scale(0.98);
+    transform: scale(0.97); /* แอนิเมชันยุบตัวเวลาเอานิ้วจิ้ม */
 }
 
-/* ปุ่มย้อนกลับ สีชมพูฮอตพิงก์สะดุดตา */
+/* ปุ่มย้อนกลับสีชมพูแดงเข้มสะดุดตา แยกจากปุ่มหลักชัดเจน */
 #backButton {
     background: #ffffff;
-    color: var(--neon-pink);
-    border: 3px solid rgba(255, 0, 127, 0.2);
-    box-shadow: 0 10px 20px rgba(255, 0, 127, 0.05);
+    color: var(--ios-pink);
+    border: 2px solid rgba(255, 45, 85, 0.25);
+    box-shadow: none;
 }
 
 #backButton:hover {
-    background: #fff0f5;
-    border-color: var(--neon-pink);
-    box-shadow: 0 15px 30px rgba(255, 0, 127, 0.3);
+    background: rgba(255, 45, 85, 0.08);
+    border-color: var(--ios-pink);
+    box-shadow: 0 8px 20px rgba(255, 45, 85, 0.15);
 }
 
-/* --- กล่อง QR Code คอนทราสต์สูงสุดสีจัดจ้าน --- */
+/* --- กล่อง QR Code คอนทราสต์สูง เส้นประหนาชัดเจน --- */
 .qr-box {
-    background: #ffffff;
-    border: 4px dashed var(--neon-pink);
-    padding: 30px 20px;
-    border-radius: var(--radius-lg);
-    margin: 25px 0;
-    box-shadow: 0 15px 35px rgba(255, 0, 127, 0.08);
-    animation: neonPulse 2.5s infinite ease-in-out;
+    background: rgba(255, 255, 255, 0.7);
+    border: 3px dashed var(--ios-blue); /* เส้นประสีฟ้าเข้มชัดแจ๋ว */
+    padding: 32px 20px;
+    border-radius: var(--radius-ios-lg);
+    margin: 24px 0;
+    box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
+    
+    /* แอนิเมชันกรอบสั่นไหวเบาๆ แบบนุ่มนวล */
+    animation: borderGlow 4s infinite ease-in-out;
 }
 
-@keyframes neonPulse {
-    0%, 100% { border-color: var(--neon-pink); box-shadow: 0 0 15px rgba(255, 0, 127, 0.2); }
-    50% { border-color: var(--neon-blue); box-shadow: 0 0 25px rgba(0, 229, 255, 0.4); }
+@keyframes borderGlow {
+    0%, 100% { border-color: var(--ios-blue); }
+    50% { border-color: var(--ios-purple); }
 }
 
 .qr-box h2 {
-    color: var(--neon-purple);
-    font-size: 1.35rem;
+    color: var(--dark-text);
+    font-size: 1.3rem;
     font-weight: 700;
-    margin-bottom: 15px;
+    margin-bottom: 16px;
 }
 
 .qr-box img {
     max-width: 100%;
     height: auto;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    transition: var(--bounce-transition);
+    border-radius: 20px; /* มนใสสไตล์แอปเปล */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    transition: var(--ios-spring);
 }
 
 .qr-box img:hover {
-    transform: scale(1.05) rotate(1deg);
+    transform: scale(1.04) rotate(0.5deg);
 }
 
-/* ยอดเงินตัวใหญ่สีสะท้อนแสง */
+/* ยอดเงินตัวหนาปึ้ก สีน้ำเงินเข้มสะดุดตา */
 .amount {
     display: inline-block;
-    font-size: 2.2rem;
+    font-size: 2.3rem;
     font-weight: 800;
-    background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-top: 15px;
+    color: var(--ios-blue);
+    margin-top: 14px;
+}
+
+/* --- ไอคอนเฉลิมฉลองหน้าขอบคุณ (สดจัดชัดเจน) --- */
+.success-icon {
+    font-size: 4.8rem;
+    color: var(--ios-green); /* เขียวสดชัดเจนแยกจากพื้นหลัง */
+    margin-bottom: 15px;
+    display: inline-block;
 }
 
 /* --- ส่วนตรวจสอบข้อมูลหน้ายืนยัน --- */
 .info-group {
-    background: #ffffff;
-    border: 3px solid #f1f5f9;
-    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid rgba(0, 0, 0, 0.05);
+    border-radius: var(--radius-ios-md);
     padding: 24px;
-    margin-bottom: 25px;
+    margin-bottom: 26px;
     text-align: left;
-    box-shadow: inset 0 2px 8px rgba(0,0,0,0.02);
 }
 
 .info-group p {
@@ -259,31 +271,29 @@ button:active {
 .info-group p:last-child { margin-bottom: 0; }
 
 .info-group strong {
-    color: var(--neon-purple);
+    color: var(--ios-purple); /* สีม่วงเข้มแยกประเภทข้อมูล */
     width: 90px;
     font-weight: 700;
     display: inline-block;
 }
 
-/* ตัวนับถอยหลังหน้าขอบคุณ */
 .countdown-num {
-    color: var(--neon-pink) !important;
-    font-size: 1.1rem;
+    color: var(--ios-pink) !important;
     font-weight: 800;
 }
 
 /* ==========================================================================
-   📱 100% RESPONSIVE AUTO-FIX (รองรับคอม โน้ตบุ๊ค ไอแพด มือถือ)
+   📱 100% RESPONSIVE NOT OVERFLOW (ฟิกซ์หน้าจอล้น คอม-โน้ตบุ๊ค-แท็บเล็ต-มือถือ)
    ========================================================================== */
 
-/* จอคอมพิวเตอร์กว้างๆ */
+/* 💻 หน้าจอคอมพิวเตอร์และโน้ตบุ๊ค */
 @media (min-width: 1200px) {
     .container { max-width: 460px; }
 }
 
-/* จอแท็บเล็ต / ไอแพด */
+/* 📑 หน้าจอแท็บเล็ต / iPad ทุกรุ่น */
 @media (max-width: 1024px) {
-    body { padding: 25px; }
+    body { padding: 24px; }
     .container { max-width: 440px; }
 }
 
@@ -291,28 +301,28 @@ button:active {
     .container { max-width: 85%; }
 }
 
-/* หน้าจอมือถือทุกขนาด (ป้องกันปุ่มเบียด แก้ไขอาการล้นหน้าจอ) */
+/* 📱 หน้าจอมือถือทุกขนาด (ป้องกันปุ่มเบียด บล็อกจอล้น) */
 @media (max-width: 480px) {
     body {
-        padding: 10px;
-        align-items: flex-start; /* ดันกล่องขึ้นบนเพื่อไม่ให้คีย์บอร์ดมือถือบัง */
-        padding-top: 35px;
+        padding: 12px;
+        align-items: flex-start; /* ดันขึ้นข้างบนเล็กน้อยกันคีย์บอร์ดดีดบัง */
+        padding-top: 40px;
     }
     
     .container {
         max-width: 100%;
-        border-radius: 26px;
-        padding: 26px 20px; /* กระชับขอบให้ประหยัดพื้นที่บนมือถือจอเล็ก */
+        border-radius: 28px;
+        padding: 28px 22px; /* กระชับขอบพื้นที่เพื่อให้อ่านง่ายบนจอเล็ก */
     }
 
-    /* สลับปุ่มเป็นแนวตั้งคู่กัน เพื่อเพิ่มพื้นที่ให้กดง่ายขึ้น ไม่เบียดกันทะลุขอบจอ */
+    /* ปรับปุ่มเรียงแนวตั้งบนมือถือ เพื่อเพิ่มพื้นที่กดและป้องกันขอบล้น */
     .button-group {
         flex-direction: column;
         gap: 12px;
-        margin-top: 20px;
+        margin-top: 22px;
     }
 
-    /* จัดลำดับ: ให้ปุ่ม "ถัดไป/ยืนยัน" อยู่บน ส่วนปุ่ม "ย้อนกลับ" อยู่ล่าง */
+    /* จัดลำดับ: ปุ่มยืนยันอยู่บน ปุ่มย้อนกลับอยู่ล่างสุด */
     .button-group button { order: 1; }
     #backButton { order: 2; }
 }
