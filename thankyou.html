@@ -2,21 +2,55 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ขอบคุณ</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* ลูกเล่นไอคอนเฉลิมฉลองและตัวนับถอยหลังพาสเทลสดใส */
+        .success-icon {
+            font-size: 4.5rem;
+            margin-bottom: 15px;
+            animation: popCheck 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        .countdown-text {
+            font-size: 0.9rem;
+            color: var(--light-text);
+            margin-top: 25px;
+            background: #ffffff;
+            padding: 10px 20px;
+            border-radius: 30px;
+            display: inline-block;
+            border: 2px solid #f1f5f9;
+        }
+        .countdown-num {
+            color: #d946ef; /* สีชมพูนีออนจากธีมใหม่ */
+            font-weight: 700;
+        }
+        @keyframes popCheck {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1 style="color: #0d47a1;">โอนเงินเสร็จสิ้นแล้ว!</h1>
-        <p>ระบบได้ทำการยืนยันเรียบร้อยแล้ว</p>
-        <p>จำนวนเงิน <span class="amount">5</span> บาท</p>
+        <div class="success-icon">🎉</div>
+        
+        <h1>โอนเงินเสร็จสิ้นแล้ว!</h1>
+        <p>ระบบได้ทำการยืนยันและบันทึกสลิปเรียบร้อยแล้ว</p>
+        <p>จำนวนเงิน: <span class="amount">5 บาท</span></p>
+        
         <div class="button-container">
-            <button id="back-to-home" onclick="window.location.href='index.html'" style="background-color: #03a9f4;">กลับหน้าหลัก</button>
+            <button id="back-to-home">กลับหน้าหลักห้องเรียน</button>
+        </div>
+
+        <div class="countdown-text">
+            ระบบกำลังพากลับหน้าหลักอัตโนมัติใน <span id="timer" class="countdown-num">3</span> วินาที...
         </div>
     </div>
-</body>
-</html>
+
+    <script>
+        // 🚨 จุดสำคัญ: แก้ไขลิงก์ในเครื่องหมายคำพูดด้านล่างนี้ให้เป็น URL ของเว็บแรก
