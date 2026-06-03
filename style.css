@@ -1,192 +1,321 @@
 /* ==========================================================================
-   สไตล์ใหม่สำหรับเว็บจ่ายเงิน: โมเดิร์น คลีน (ธีมเดียวกับเว็บหลัก SMTE 20)
+   VIBRANT MINIMALIST & SMOOTH UI (NEON CYBER-PASTEL)
+   - 100% Fully Responsive (No Overflow)
+   - Super Smooth Animations (iOS-like physics)
+   - High-Contrast Colors
    ========================================================================== */
 
-/* ดึงฟอนต์ Prompt จาก Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
 
+:root {
+    /* ชุดสีสุดจี๊ด ตัดกันฉูดฉาดแบบมินิมอลแพงๆ */
+    --neon-gradient: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #d946ef 100%); /* ฟ้าเทอร์ควอยซ์ -> ชมพูนีออน */
+    --btn-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);  /* Indigo -> Pink Neon */
+    --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); /* พื้นหลังมืดขับสีนีออน หรือถ้าชอบสว่างเปลี่ยนเป็นล่างนี้ */
+    /* หากชอบพื้นหลังสว่างให้เปิดใช้งานบรรทัดนี้แทนครับ: */
+    --bg-gradient-light: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 50%, #fbe7c6 100%);
+    
+    --primary: #6366f1;
+    --mint-neon: #10b981;   /* เขียวมินต์สดใสสำหรับความสำเร็จ */
+    --rose-neon: #f43f5e;   /* แดงโรสสะดุดตาสำหรับปุ่มย้อนกลับ */
+    --dark-text: #0f172a;
+    --light-text: #475569;
+    
+    /* ระบบกระจกฝ้าระดับพรีเมียม */
+    --glass-bg: rgba(255, 255, 255, 0.88);
+    --glass-border: rgba(255, 255, 255, 0.6);
+    --blur-strength: 16px;
+    
+    /* เงาลอยฟุ้งเนียนๆ แบบมีมิติ */
+    --smooth-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.25);
+    --radius-lg: 28px;
+    --radius-md: 18px;
+}
+
+/* --- รีเซ็ตค่าเพื่อป้องกันหน้าจอล้นในทุกกรณี --- */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Prompt', sans-serif;
+    -webkit-tap-highlight-color: transparent;
 }
 
-:root {
-    --primary-color: #4a90e2;    /* ฟ้าสว่างโมเดิร์น */
-    --secondary-color: #e6f0fa;  /* ฟ้าอ่อนพาสเทลสำหรับกล่อง QR */
-    --dark-blue: #1e3d59;       /* น้ำเงินเข้มสำหรับหัวข้อ */
-    --text-color: #4a5568;      /* เทาเข้มสำหรับเนื้อหาหลัก */
-    --bg-color: #f4f8fc;        /* พื้นหลังฟ้าจางๆ สะอาดตา */
-    --white: #ffffff;
-    --radius: 16px;             /* ความโค้งมนละมุนตา */
-    --transition: all 0.3s ease;
+html, body {
+    width: 100%;
+    min-height: 100vh;
+    min-height: -webkit-fill-available; /* สำหรับ iOS Safari */
+    overflow-x: hidden; /* บล็อกการเลื่อนจอแนวขวางอย่างเด็ดขาด */
 }
 
 body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    background: var(--bg-color);
-    color: var(--text-color);
-    padding: 20px;
+    background: var(--bg-gradient-light); /* ใช้ธีมสว่างสดใสตัดกับปุ่มสีจัดจ้าน */
+    background-attachment: fixed;
+    padding: clamp(12px, 4vw, 35px); /* ปรับขอบกระชับตามอุปกรณ์ */
 }
 
-/* กล่อง Container สไตล์กระจกฝ้า (Glassmorphism) */
+/* --- กล่องข้อความหลัก (Fluid Glass Container) --- */
 .container {
-    background-color: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    padding: 40px;
-    border-radius: var(--radius);
-    box-shadow: 0 10px 30px rgba(161, 196, 253, 0.15);
-    border: 1px solid rgba(161, 196, 253, 0.2);
-    text-align: center;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--blur-strength));
+    -webkit-backdrop-filter: blur(var(--blur-strength));
+    border: 2px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--smooth-shadow);
+    padding: clamp(24px, 6vw, 45px); /* ยืดหยุ่นตามความกว้างจอ */
     width: 100%;
-    max-width: 500px;
+    max-width: 500px; /* บล็อกขนาดไม่ให้ใหญ่เกินไปบนคอมและโน้ตบุ๊ค */
+    text-align: center;
+    position: relative;
     
-    /* แอนิเมชันตอนเปิดหน้าเว็บให้ค่อยๆ ลอยขึ้นแบบสมูท */
-    animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    /* แอนิเมชันเปิดตัว ลื่นไหลระดับ 60fps ด้วย cubic-bezier */
+    animation: smoothIntro 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+@keyframes smoothIntro {
+    from { opacity: 0; transform: translateY(40px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* หัวข้อใหญ่ */
+/* --- หัวข้อไล่เฉดสีสะดุดตา --- */
 h1 {
-    color: var(--dark-blue);
-    margin-bottom: 25px;
-    font-size: 2.2rem;
-    font-weight: 600;
-    letter-spacing: -0.5px;
+    font-size: clamp(1.6rem, 5vw, 2.3rem);
+    font-weight: 700;
+    background: var(--btn-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
 }
 
-/* รูปแบบฟอร์มกรอกข้อมูล */
+p {
+    font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+    color: var(--light-text);
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+/* --- ฟอร์มอินพุตสไตล์มินิมอล --- */
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 22px;
     text-align: left;
 }
 
 label {
     display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
     margin-bottom: 8px;
-    color: var(--dark-blue);
-    font-weight: 500;
-    font-size: 1rem;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding-left: 4px;
 }
 
-/* ช่องกรอกข้อมูล (ตัวเลข, วันที่, ไฟล์) */
 input[type="number"],
 input[type="date"],
 input[type="file"] {
     width: 100%;
-    padding: 12px 16px;
-    border: 1px solid #cbd5e0;
-    border-radius: 10px;
-    box-sizing: border-box;
-    font-size: 0.95rem;
-    background-color: var(--white);
-    transition: var(--transition);
-    color: var(--text-color);
-}
-
-/* เอฟเฟกต์ตอนกดคลิกช่องกรอกข้อมูล */
-input[type="number"]:focus,
-input[type="date"]:focus,
-input[type="file"]:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.15);
+    height: 54px; /* ความสูงมาตรฐานสากล กดง่ายทั้งนิ้วมือและเมาส์ */
+    padding: 0 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    color: var(--dark-text);
+    background: #ffffff;
     outline: none;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* การจัดวางปุ่ม */
+/* เอฟเฟกต์ตอนโฟกัส นุ่มนวล เด้งรับสายตา */
+input:focus {
+    border-color: #a855f7;
+    box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.15);
+    transform: translateY(-2px);
+}
+
+/* อินพุตแบบอัปโหลดไฟล์ */
+input[type="file"] {
+    padding-top: 10px;
+    cursor: pointer;
+}
+
+/* --- ปุ่มกดทรงพลัง สดใส มีชีวิตชีวา --- */
 .button-group,
 .button-container {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin-top: 30px;
+    gap: 14px;
+    margin-top: 28px;
+    width: 100%;
 }
 
-/* ปุ่มกดสไตล์แบนเรียบหรูโมเดิร์น */
 button, .btn-primary {
     flex: 1;
-    padding: 12px 24px;
-    background-color: var(--primary-color);
-    color: var(--white);
+    width: 100%;
+    height: 54px;
+    background: var(--btn-gradient);
+    color: #ffffff;
     border: none;
-    border-radius: var(--radius);
+    border-radius: var(--radius-md);
+    font-size: 1.05rem;
+    font-weight: 600;
     cursor: pointer;
-    font-size: 1rem;
-    font-weight: 500;
-    transition: var(--transition);
-    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.2);
-    text-decoration: none;
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 25px rgba(168, 85, 247, 0.3);
+    
+    /* อัตราเร่งแอนิเมชันแบบสมูท */
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-button:hover, .btn-primary:hover {
-    background-color: #357abd;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.3);
+button:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(168, 85, 247, 0.45);
+    filter: brightness(1.1);
 }
 
-button:active, .btn-primary:active {
-    transform: translateY(0);
+button:active {
+    transform: translateY(-1px) scale(0.99);
 }
 
-/* ปุ่มย้อนกลับ (สีแดงสไตล์โมเดิร์น ไม่ฉูดฉาดเกินไป) */
+/* ปุ่มย้อนกลับดีไซน์ตัดสีสดใส ไม่จมธีม */
 #backButton {
-    background-color: #e63946;
-    box-shadow: 0 4px 15px rgba(230, 57, 70, 0.2);
+    background: #ffffff;
+    color: var(--rose-neon);
+    border: 2px solid #ffe4e6;
+    box-shadow: 0 10px 20px rgba(244, 63, 94, 0.05);
 }
 
 #backButton:hover {
-    background-color: #cb2d39;
-    box-shadow: 0 6px 20px rgba(230, 57, 70, 0.3);
+    background: #ffe4e6;
+    border-color: var(--rose-neon);
+    box-shadow: 0 12px 25px rgba(244, 63, 94, 0.2);
 }
 
-/* กล่องครอบ QR Code */
+/* --- กล่อง QR Code คอนทราสต์สูง --- */
 .qr-box {
-    border: 2px dashed rgba(74, 144, 226, 0.3);
-    background-color: var(--secondary-color);
-    padding: 20px;
-    border-radius: var(--radius);
+    background: #ffffff;
+    border: 3px dashed #a855f7;
+    padding: 30px 20px;
+    border-radius: var(--radius-lg);
     margin: 20px 0;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.02);
+    animation: borderPulse 3s infinite ease-in-out;
 }
 
-h2 {
-    color: var(--dark-blue);
-    font-size: 1.4rem;
+@keyframes borderPulse {
+    0%, 100% { border-color: #6366f1; }
+    50% { border-color: #ec4899; }
+}
+
+.qr-box h2 {
+    color: var(--dark-text);
+    font-size: 1.25rem;
     font-weight: 600;
+    margin-bottom: 15px;
 }
 
-p {
-    color: var(--text-color);
-    font-size: 1rem;
-    line-height: 1.6;
+.qr-box img {
+    max-width: 100%;
+    height: auto; /* การันตีรูปภาพไม่บี้แบนบนมือถือ */
+    border-radius: 14px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease;
 }
 
-/* ยอดเงินชำระ (5 บาท) */
+.qr-box img:hover {
+    transform: scale(1.03);
+}
+
 .amount {
-    color: var(--dark-blue);
-    font-size: 1.5rem;
-    font-weight: 600;
+    display: inline-block;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--dark-text);
+    background: linear-gradient(135deg, #6366f1, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-top: 12px;
 }
 
-/* ปรับแต่งสำหรับการแสดงผลบนหน้าจอมือถือ */
+/* --- ส่วนแสดงผลหน้าเช็กข้อมูล (Confirm Page) --- */
+.info-group {
+    background: #ffffff;
+    border: 2px solid #f1f5f9;
+    border-radius: var(--radius-md);
+    padding: 22px;
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.info-group p {
+    margin-bottom: 12px;
+    font-size: 1.05rem;
+    color: var(--dark-text);
+    display: flex;
+    align-items: center;
+}
+
+.info-group p:last-child { margin-bottom: 0; }
+
+.info-group strong {
+    color: var(--primary);
+    width: 85px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+/* ==========================================================================
+   📱 SYSTEM RESPONSIVE - รองรับทุกมิติหน้าจอแบบไร้รอยต่อ
+   ========================================================================== */
+
+/* 💻 โน้ตบุ๊ค และจอ Desktop ขนาดกลาง */
+@media (max-width: 1200px) {
+    .container { max-width: 460px; }
+}
+
+/* 📑 แท็บเล็ต / iPad (ทั้งแนวตั้งและแนวนอน) */
+@media (max-width: 1024px) {
+    body { padding: 30px; }
+    .container { max-width: 440px; }
+}
+
 @media (max-width: 768px) {
+    .container { max-width: 90%; }
+}
+
+/* 📱 โทรศัพท์มือถือทุกขนาด (iPhone SE, iPhone Pro Max, Android ทุกรุ่น) */
+@media (max-width: 480px) {
+    body {
+        padding: 12px;
+        align-items: flex-start; /* ดันกล่องขึ้นบนนิดหน่อย ป้องกันคีย์บอร์ดมือถือดีดขึ้นมาบังปุ่ม */
+        padding-top: 30px;
+    }
+    
     .container {
-        padding: 25px 20px;
+        max-width: 100%;
+        border-radius: 24px;
+        padding: 24px 18px; /* กระชับพื้นที่เพื่อให้มองเห็นครบในหน้าเดียว */
     }
-    h1 {
-        font-size: 1.8rem;
-    }
+
+    /* บนมือถือสลับให้ปุ่มเรียงแนวตั้ง เพื่อไม่ให้เบียดตัวอักษรจนล้นขอบจอ */
     .button-group {
-        flex-direction: column-reverse; /* บนมือถือให้ปุ่มยืนยันอยู่บน ปุ่มย้อนกลับอยู่ล่าง */
-        gap: 10px;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 20px;
     }
+
+    /* จัดระเบียบ: ให้ปุ่ม "ถัดไป/ยืนยัน" อยู่ด้านบนกดง่าย และปุ่ม "ย้อนกลับ" หล่นไปอยู่ด้านล่างสุด */
+    .button-group button { order: 1; }
+    #backButton { order: 2; }
+}
+
+/* หน้าจอคอมพิวเตอร์ขนาดใหญ่พิเศษกว้างๆ */
+@media (min-width: 1600px) {
+    .container { max-width: 480px; }
 }
