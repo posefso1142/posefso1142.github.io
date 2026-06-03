@@ -2,52 +2,160 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ยืนยันข้อมูล</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ยืนยันข้อมูลและส่งหลักฐาน</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ios-style.css">
     <style>
-        .info-group { text-align: left; margin-bottom: 20px; }
-        .info-group p { font-size: 1.2em; color: #555; margin: 10px 0; }
-        .info-group strong { color: #0d47a1; } /* เปลี่ยนสีให้เข้ากับธีมใหม่ */
-        .button-group { display: flex; justify-content: space-between; margin-top: 25px; }
+        /* 📸 ส่วนแต่งเพิ่มพิเศษสำหรับโซนอัปโหลดสลิปสุดหรูสไตล์ iOS 26 */
+        .upload-card {
+            background: rgba(255, 255, 255, 0.7);
+            border: 2px dashed rgba(0, 122, 255, 0.4);
+            border-radius: 24px;
+            padding: 30px 20px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.3, 1.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 180px;
+            margin-top: 10px;
+        }
+
+        .upload-card:hover {
+            border-color: #007aff;
+            background: rgba(255, 255, 255, 0.9);
+            transform: scale(1.02);
+            box-shadow: 0 10px 25px rgba(0, 122, 255, 0.1);
+        }
+
+        /* ซ่อนปุ่ม input เชยๆ ของเบราว์เซอร์ทิ้งไป */
+        #slipUpload {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0; left: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .upload-card:hover .upload-icon {
+            transform: translateY(-5px);
+        }
+
+        .upload-hint {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1c1c1e;
+        }
+
+        .upload-sub-hint {
+            font-size: 0.85rem;
+            color: #3a3a3c;
+            margin-top: 4px;
+        }
+
+        /* 🖼️ ช่องพรีวิวรูปสลิปเมื่ออัปโหลดเสร็จ (สวย จัดกึ่งกลางเป๊ะ) */
+        .preview-container {
+            display: none;
+            width: 100%;
+            max-width: 180px;
+            margin-top: 15px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            border: 2px solid #ffffff;
+        }
+
+        #imagePreview {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>ยืนยันข้อมูล</h1>
-        <p>โปรดตรวจสอบข้อมูลและอัปโหลดสลิป:</p>
+        <p>โปรดตรวจสอบข้อมูลและอัปโหลดหลักฐานการโอนเงิน</p>
+        
         <div class="info-group">
             <p><strong>เลขที่:</strong> <span id="displayStudentId"></span></p>
             <p><strong>วันที่:</strong> <span id="displayPaymentDate"></span></p>
         </div>
-        <div class="form-group">
-            <label for="slipUpload">อัปโหลดสลิป:</label>
-            <input type="file" id="slipUpload" accept="image/*" required>
+        
+        <div class="form-group" style="text-align: center;">
+            <label style="text-align: left; display: block;">หลักฐานการโอนเงิน</label>
+            
+            <div class="upload-card" id="uploadZone">
+                <div class="upload-icon">📸</div>
+                <div class="upload-hint" id="statusText">กดตรงนี้เพื่อเลือกรูปสลิป</div>
+                <div class="upload-sub-hint">รองรับไฟล์รูปภาพทุกชนิด</div>
+                
+                <div class="preview-container" id="previewBox">
+                    <img id="imagePreview" src="" alt="Slip Preview">
+                </div>
+                
+                <input type="file" id="slipUpload" accept="image/*" required>
+            </div>
         </div>
+        
         <div class="button-group">
             <button id="backButton">ย้อนกลับ</button>
-            <button id="nextButton">ยืนยัน</button>
+            <button id="nextButton">ยืนยันการส่ง</button>
         </div>
     </div>
+
     <script>
+        // ดึงข้อมูลที่เก็บไว้มาโชว์
         const studentId = localStorage.getItem('studentId');
         const paymentDate = localStorage.getItem('paymentDate');
         document.getElementById('displayStudentId').textContent = studentId;
         document.getElementById('displayPaymentDate').textContent = paymentDate;
 
+        // ลิงก์ระบบบันทึกหลังบ้านของคุณ
         const googleAppsScriptUrl = "https://script.google.com/macros/s/AKfycbxC1MRYwueTMJ4OXai1gs9zZK0Z__M6ifCLM5_WnFDqXjyt_sLWs0VTclR2EURt3IRosA/exec"; 
 
+        const slipInput = document.getElementById('slipUpload');
+        const previewBox = document.getElementById('previewBox');
+        const imagePreview = document.getElementById('imagePreview');
+        const statusText = document.getElementById('statusText');
+
+        // ฟังก์ชันตรวจจับและดึงรูปมาโชว์พรีวิวทันทีที่เลือกรูป
+        slipInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    previewBox.style.display = 'block'; // เปิดกล่องพรีวิว
+                    statusText.textContent = "เปลี่ยนรูปภาพสลิป"; // เปลี่ยนข้อความการ์ด
+                    statusText.style.color = "#34c759"; // เปลี่ยนเป็นสีเขียวแจ้งเตือนว่าสำเร็จ
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // ปุ่มย้อนกลับไปหน้าแรก
         document.getElementById('backButton').addEventListener('click', function() {
             window.location.href = 'index.html';
         });
 
+        // ปุ่มยืนยันส่งข้อมูลเข้ากูเกิ้ลชีต
         document.getElementById('nextButton').addEventListener('click', function() {
-            const slipFile = document.getElementById('slipUpload').files[0];
+            const slipFile = slipInput.files[0];
             if (!slipFile) {
-                alert('กรุณาอัปโหลดสลิปก่อน');
+                alert('กรุณาอัปโหลดสลิปก่อนส่งข้อมูลครับ');
                 return;
             }
 
@@ -62,21 +170,17 @@
                     fileName: slipFile.name
                 };
 
+                // ส่งค่าไปที่ Google Sheet
                 fetch(googleAppsScriptUrl, {
                     method: 'POST',
                     mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: new URLSearchParams(formData)
                 }).then(response => {
-                    document.body.classList.add('fade-out');
-                    setTimeout(() => {
-                        window.location.href = 'thankyou.html';
-                    }, 500);
+                    window.location.href = 'thankyou.html';
                 }).catch(error => {
                     console.error('Error:', error);
-                    alert('เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองอีกครั้ง');
+                    alert('ระบบขัดข้อง กรุณาลองอัปโหลดใหม่อีกครั้งครับ');
                 });
             };
             reader.readAsDataURL(slipFile);
