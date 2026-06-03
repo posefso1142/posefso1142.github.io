@@ -1,78 +1,44 @@
 /* ==========================================================================
-   iOS ULTRA GLASSMORPHIC UI (HIGH CONTRAST & SUPER SMOOTH)
-   - 100% Fully Responsive & Anti-Overflow System
-   - กระจกใสแจ๋ว ขอบคมชัด มิติเงาลึก สไตล์ iOS ล่าสุด
-   - สีสันไอคอนและปุ่มเข้มจัดจ้าน (High Contrast) ไม่กลืนกันอ่านง่ายสุดๆ
+   iOS 26 ULTRA GLASSMORPHIC - HIGH CONTRAST VER. (ios-style.css)
    ========================================================================== */
-
 @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&display=swap');
 
 :root {
-    /* 🎨 สีสันองค์ประกอบระดับ High Saturation (เข้ม สด ชัดเจน ไม่จืดชืด) */
-    --ios-blue: #007aff;        /* ฟ้า iOS มาตรฐาน เข้มคมชัด */
-    --ios-purple: #5856d6;      /* ม่วงเข้มอินดิโก้ */
-    --ios-pink: #ff2d55;        /* ชมพูฮอตพิงก์เข้ม */
-    --ios-green: #34c759;       /* เขียวไอคอนสำเร็จ เข้มสดดึงสายตา */
-    
-    /* ระบบตัวอักษรเน้น Contrast สูง */
-    --dark-text: #1c1c1e;       /* ดำสนิทเกือบ 100% สไตล์ iOS Text */
-    --light-text: #3a3a3c;      /* เทาเข้มมากสำหรับคำอธิบาย อ่านง่ายไม่จม */
-    
-    /* 🥛 ระบบกระจกใสแจ๋ว (Ultra Glassmorphism) */
-    --glass-bg: rgba(255, 255, 255, 0.65); /* ใสขึ้นเพื่อให้เห็นมิติด้านหลัง */
-    --glass-border: rgba(255, 255, 255, 0.8); /* ขอบกระจกสีขาวคมชัด */
-    --inner-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.9);
-    
-    /* 🎛️ ความมนและมิติเงาลึก (Depth) */
-    --radius-ios-lg: 32px;      /* มนละมุนแบบ Squircle ของ Apple */
-    --radius-ios-md: 18px;
-    --ios-shadow: 0 4px 30px rgba(0, 0, 0, 0.08), 
-                  0 20px 40px rgba(0, 0, 0, 0.12); /* เงาสองชั้นเพิ่มมิติลอยตัว */
-                  
-    /* 🎬 iOS Fluid Animation Physics (หน่วงนุ่มเด้งสไตล์สปริง) */
-    --ios-spring: all 0.55s cubic-bezier(0.25, 1, 0.3, 1.15);
+    --ios-blue: #007aff !important;
+    --ios-purple: #5856d6 !important;
+    --ios-pink: #ff2d55 !important;
+    --ios-green: #34c759 !important;
+    --dark-text: #1c1c1e !important;
+    --light-text: #3a3a3c !important;
+    --glass-bg: rgba(255, 255, 255, 0.75) !important;
+    --glass-border: rgba(255, 255, 255, 0.9) !important;
+    --radius-ios-lg: 32px !important;
+    --radius-ios-md: 18px !important;
+    --ios-spring: all 0.5s cubic-bezier(0.25, 1, 0.3, 1.15);
 }
 
-/* --- รีเซ็ตค่าและบล็อกการล้นของหน้าจออย่างเด็ดขาด --- */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Prompt', sans-serif;
-    -webkit-tap-highlight-color: transparent;
+    margin: 0; padding: 0; box-sizing: border-box;
+    font-family: 'Prompt', sans-serif; -webkit-tap-highlight-color: transparent;
 }
 
-html, body {
-    width: 100%;
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
-    overflow-x: hidden;
-}
+html, body { width: 100%; min-height: 100vh; overflow-x: hidden; }
 
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* พื้นหลังไล่เฉดสีพาสเทลเพื่อขับให้กล่องกระจกใสตรงกลางลอยเด่นขึ้นมา */
-    background: linear-gradient(135deg, #e5efff 0%, #f7e6ff 50%, #fff0f5 100%);
-    background-attachment: fixed;
+    display: flex; justify-content: center; align-items: center;
+    background: linear-gradient(135deg, #e5efff 0%, #f7e6ff 50%, #fff0f5 100%) !important;
     padding: clamp(12px, 4vw, 32px);
 }
 
-/* --- กล่องคอนเทนเนอร์กระจกใสแจ๋ว (Ultra Glass Container) --- */
 .container {
     background: var(--glass-bg);
-    backdrop-filter: blur(25px) saturate(200%); /* เพิ่ม saturate เพื่อให้สีด้านหลังที่ทะลุกระจกดูสดอิ่มขึ้น */
+    backdrop-filter: blur(25px) saturate(200%);
     -webkit-backdrop-filter: blur(25px) saturate(200%);
     border: 2px solid var(--glass-border);
     border-radius: var(--radius-ios-lg);
-    box-shadow: var(--ios-shadow), var(--inner-shadow);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08), 0 20px 40px rgba(0, 0, 0, 0.12) !important;
     padding: clamp(28px, 6vw, 48px);
-    width: 100%;
-    max-width: 480px; /* ฟิตพอดีทั้งคอมและโน้ตบุ๊ค */
-    text-align: center;
-    
-    /* แอนิเมชันตอนเปิดหน้าเว็บ ลอยฟึบขึ้นมาแบบนุ่มนวล */
+    width: 100%; max-width: 480px; text-align: center;
     animation: iosIntro 0.75s cubic-bezier(0.25, 1, 0.3, 1) forwards;
 }
 
@@ -81,248 +47,58 @@ body {
     to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* --- หัวข้อและตัวอักษรเข้มคมชัด --- */
-h1 {
-    font-size: clamp(1.8rem, 5.5vw, 2.4rem);
-    font-weight: 800;
-    color: var(--dark-text); /* สีดำเข้มชัดเจน */
-    letter-spacing: -0.8px;
-    margin-bottom: 8px;
-}
+h1 { font-size: clamp(1.8rem, 5.5vw, 2.4rem); font-weight: 800; color: var(--dark-text); margin-bottom: 8px; }
+p { font-size: clamp(0.95rem, 2.8vw, 1.05rem); color: var(--light-text); font-weight: 500; line-height: 1.5; margin-bottom: 28px; }
+.form-group { margin-bottom: 24px; text-align: left; }
+label { display: block; font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; color: var(--dark-text); padding-left: 4px; }
 
-p {
-    font-size: clamp(0.95rem, 2.8vw, 1.05rem);
-    color: var(--light-text); /* เทาเข้มอ่านง่าย */
-    font-weight: 500;
-    line-height: 1.5;
-    margin-bottom: 28px;
-}
-
-/* --- ฟอร์มอินพุตขอบมนใส --- */
-.form-group {
-    margin-bottom: 24px;
-    text-align: left;
-}
-
-label {
-    display: block;
-    font-size: 0.95rem;
-    font-weight: 700;
-    margin-bottom: 8px;
-    color: var(--dark-text); /* ปรับหัวข้อฟอร์มให้ดำเข้ม */
-    padding-left: 4px;
-}
-
-input[type="number"],
-input[type="date"],
-input[type="file"] {
-    width: 100%;
-    height: 54px;
-    padding: 0 16px;
-    /* อินพุตสไตล์กระจกจมลงไปในเนื้อเว็บ */
-    border: 2px solid rgba(0, 0, 0, 0.08);
+input[type="number"], input[type="date"], input[type="file"] {
+    width: 100%; height: 54px; padding: 0 16px;
+    border: 2px solid rgba(0, 0, 0, 0.15) !important;
     border-radius: var(--radius-ios-md);
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--dark-text);
-    background: rgba(255, 255, 255, 0.6);
-    outline: none;
-    transition: var(--ios-spring);
+    font-size: 1rem; font-weight: 600; color: var(--dark-text);
+    background: rgba(255, 255, 255, 0.8) !important;
+    outline: none; transition: var(--ios-spring);
 }
 
-/* ตอนกดคลิกพิมพ์ (Focus): ขอบหนาขึ้น เด้งรับ และเปลี่ยนเป็นสีฟ้า iOS เด่นมาก */
-input:focus {
-    border-color: var(--ios-blue);
-    background: #ffffff;
-    box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15);
-    transform: scale(1.01);
-}
+input:focus { border-color: var(--ios-blue) !important; background: #ffffff !important; transform: scale(1.02); }
 
-input[type="file"] {
-    padding-top: 10px;
-    cursor: pointer;
-}
-
-/* --- ปุ่มกดสไตล์ Premium Solid iOS --- */
-.button-group,
-.button-container {
-    display: flex;
-    justify-content: center;
-    gap: 14px;
-    margin-top: 32px;
-    width: 100%;
-}
+.button-group, .button-container { display: flex; justify-content: center; gap: 14px; margin-top: 32px; width: 100%; }
 
 button, .btn-primary {
-    flex: 1;
-    width: 100%;
-    height: 54px;
-    /* ไล่เฉดสีน้ำเงิน-ม่วงแบบเข้มจัดจ้าน กระแทกตาชัดเจน */
-    background: linear-gradient(135deg, var(--ios-blue) 0%, var(--ios-purple) 100%);
-    color: #ffffff;
-    border: none;
-    border-radius: var(--radius-ios-md);
-    font-size: 1.05rem;
-    font-weight: 700;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 8px 20px rgba(0, 122, 255, 0.25);
+    flex: 1; width: 100%; height: 54px;
+    background: linear-gradient(135deg, var(--ios-blue) 0%, var(--ios-purple) 100%) !important;
+    color: #ffffff !important; border: none; border-radius: var(--radius-ios-md);
+    font-size: 1.05rem; font-weight: 700; cursor: pointer;
     transition: var(--ios-spring);
 }
 
-/* เมาส์ชี้หรือกดปุ่ม: หดเด้งตอบรับเหมือนปุ่มกดจริงๆ ใน iOS */
-button:hover {
-    transform: scale(1.03);
-    box-shadow: 0 12px 28px rgba(0, 122, 255, 0.4);
-    filter: brightness(1.05);
-}
+button:hover { transform: scale(1.04); filter: brightness(1.1); }
+button:active { transform: scale(0.96); } /* อนิเมชั่นปุ่มยุบตัวตอนกด */
 
-button:active {
-    transform: scale(0.97); /* แอนิเมชันยุบตัวเวลาเอานิ้วจิ้ม */
-}
-
-/* ปุ่มย้อนกลับสีชมพูแดงเข้มสะดุดตา แยกจากปุ่มหลักชัดเจน */
 #backButton {
-    background: #ffffff;
-    color: var(--ios-pink);
-    border: 2px solid rgba(255, 45, 85, 0.25);
-    box-shadow: none;
+    background: #ffffff !important; color: var(--ios-pink) !important;
+    border: 2px solid rgba(255, 45, 85, 0.4) !important;
 }
+#backButton:hover { background: rgba(255, 45, 85, 0.1) !important; }
 
-#backButton:hover {
-    background: rgba(255, 45, 85, 0.08);
-    border-color: var(--ios-pink);
-    box-shadow: 0 8px 20px rgba(255, 45, 85, 0.15);
-}
-
-/* --- กล่อง QR Code คอนทราสต์สูง เส้นประหนาชัดเจน --- */
 .qr-box {
-    background: rgba(255, 255, 255, 0.7);
-    border: 3px dashed var(--ios-blue); /* เส้นประสีฟ้าเข้มชัดแจ๋ว */
-    padding: 32px 20px;
-    border-radius: var(--radius-ios-lg);
-    margin: 24px 0;
-    box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
-    
-    /* แอนิเมชันกรอบสั่นไหวเบาๆ แบบนุ่มนวล */
-    animation: borderGlow 4s infinite ease-in-out;
+    background: rgba(255, 255, 255, 0.8); border: 3px dashed var(--ios-blue) !important;
+    padding: 32px 20px; border-radius: var(--radius-ios-lg); margin: 24px 0;
 }
+.qr-box img { max-width: 100%; height: auto; border-radius: 20px; transition: var(--ios-spring); }
+.qr-box img:hover { transform: scale(1.04); }
+.amount { display: inline-block; font-size: 2.3rem; font-weight: 800; color: var(--ios-blue) !important; margin-top: 14px; }
+.success-icon { font-size: 4.8rem; color: var(--ios-green); margin-bottom: 15px; }
 
-@keyframes borderGlow {
-    0%, 100% { border-color: var(--ios-blue); }
-    50% { border-color: var(--ios-purple); }
-}
+.info-group { background: rgba(255, 255, 255, 0.9); border: 2px solid rgba(0, 0, 0, 0.08); border-radius: var(--radius-ios-md); padding: 24px; margin-bottom: 26px; text-align: left; }
+.info-group p { margin-bottom: 12px; font-size: 1.1rem; color: var(--dark-text); font-weight: 600; }
+.info-group strong { color: var(--ios-purple); width: 90px; font-weight: 700; display: inline-block; }
+.countdown-num { color: var(--ios-pink) !important; font-weight: 800; }
 
-.qr-box h2 {
-    color: var(--dark-text);
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin-bottom: 16px;
-}
-
-.qr-box img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 20px; /* มนใสสไตล์แอปเปล */
-    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
-    transition: var(--ios-spring);
-}
-
-.qr-box img:hover {
-    transform: scale(1.04) rotate(0.5deg);
-}
-
-/* ยอดเงินตัวหนาปึ้ก สีน้ำเงินเข้มสะดุดตา */
-.amount {
-    display: inline-block;
-    font-size: 2.3rem;
-    font-weight: 800;
-    color: var(--ios-blue);
-    margin-top: 14px;
-}
-
-/* --- ไอคอนเฉลิมฉลองหน้าขอบคุณ (สดจัดชัดเจน) --- */
-.success-icon {
-    font-size: 4.8rem;
-    color: var(--ios-green); /* เขียวสดชัดเจนแยกจากพื้นหลัง */
-    margin-bottom: 15px;
-    display: inline-block;
-}
-
-/* --- ส่วนตรวจสอบข้อมูลหน้ายืนยัน --- */
-.info-group {
-    background: rgba(255, 255, 255, 0.8);
-    border: 2px solid rgba(0, 0, 0, 0.05);
-    border-radius: var(--radius-ios-md);
-    padding: 24px;
-    margin-bottom: 26px;
-    text-align: left;
-}
-
-.info-group p {
-    margin-bottom: 12px;
-    font-size: 1.1rem;
-    color: var(--dark-text);
-    font-weight: 600;
-}
-
-.info-group p:last-child { margin-bottom: 0; }
-
-.info-group strong {
-    color: var(--ios-purple); /* สีม่วงเข้มแยกประเภทข้อมูล */
-    width: 90px;
-    font-weight: 700;
-    display: inline-block;
-}
-
-.countdown-num {
-    color: var(--ios-pink) !important;
-    font-weight: 800;
-}
-
-/* ==========================================================================
-   📱 100% RESPONSIVE NOT OVERFLOW (ฟิกซ์หน้าจอล้น คอม-โน้ตบุ๊ค-แท็บเล็ต-มือถือ)
-   ========================================================================== */
-
-/* 💻 หน้าจอคอมพิวเตอร์และโน้ตบุ๊ค */
-@media (min-width: 1200px) {
-    .container { max-width: 460px; }
-}
-
-/* 📑 หน้าจอแท็บเล็ต / iPad ทุกรุ่น */
-@media (max-width: 1024px) {
-    body { padding: 24px; }
-    .container { max-width: 440px; }
-}
-
-@media (max-width: 768px) {
-    .container { max-width: 85%; }
-}
-
-/* 📱 หน้าจอมือถือทุกขนาด (ป้องกันปุ่มเบียด บล็อกจอล้น) */
 @media (max-width: 480px) {
-    body {
-        padding: 12px;
-        align-items: flex-start; /* ดันขึ้นข้างบนเล็กน้อยกันคีย์บอร์ดดีดบัง */
-        padding-top: 40px;
-    }
-    
-    .container {
-        max-width: 100%;
-        border-radius: 28px;
-        padding: 28px 22px; /* กระชับขอบพื้นที่เพื่อให้อ่านง่ายบนจอเล็ก */
-    }
-
-    /* ปรับปุ่มเรียงแนวตั้งบนมือถือ เพื่อเพิ่มพื้นที่กดและป้องกันขอบล้น */
-    .button-group {
-        flex-direction: column;
-        gap: 12px;
-        margin-top: 22px;
-    }
-
-    /* จัดลำดับ: ปุ่มยืนยันอยู่บน ปุ่มย้อนกลับอยู่ล่างสุด */
-    .button-group button { order: 1; }
-    #backButton { order: 2; }
+    body { padding: 12px; padding-top: 40px; }
+    .container { max-width: 100%; border-radius: 28px; padding: 28px 22px; }
+    .button-group { flex-direction: column; gap: 12px; }
+    .button-group button { order: 1; } #backButton { order: 2; }
 }
