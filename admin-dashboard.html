@@ -98,7 +98,7 @@
 </head>
 <body>
     <script>
-        // ระบบความปลอดภัย: ตรวจสอบสถานะการล็อกอิน
+        // ระบบความปลอดภัย: ตรวจสอบสถานะการล็อกอินก่อนเข้าหน้าเว็บ
         if (sessionStorage.getItem('isAdminLoggedIn') !== 'true') {
             alert('กรุณาเข้าสู่ระบบก่อนครับ');
             window.location.href = 'admin-login.html';
@@ -148,23 +148,22 @@
     </div>
 
     <script>
+        // ใส่ URL Web App ของนายตรงนี้ให้เรียบร้อยแล้วครับ
         const googleAppsScriptUrl = "https://script.google.com/macros/s/AKfycbw4JEb0sbTjHAKZlX2_Ecxp-5Wp8fuXymfQjcrnAbT9F9i6Md3P8a1Iz7XDveQEhHiu/exec"; 
         let rawData = [];
 
-        // ฟังก์ชันดึงข้อมูลจาก Google Sheets จริง
+        // ฟังก์ชันดึงข้อมูลแบบ Real-time จาก Sheets ด้วยวิธี GET
         async function fetchSheetData() {
             try {
-                // ยิงดึงข้อมูลด้วย GET Method จาก Apps Script ตัวเดิมของนาย
                 const response = await fetch(googleAppsScriptUrl);
                 const data = await response.json();
                 rawData = data;
                 filterAndRenderData();
             } catch (error) {
                 console.error("Error fetching data:", error);
-                // หาก Apps Script ของนายยังไม่ได้เขียน doGet ไว้ ระบบจะใช้ Data จำลองป้องกันเว็บค้าง
                 document.getElementById('dataTableBody').innerHTML = `
                     <tr><td colspan="3" style="text-align:center; color:red;">
-                        ไม่สามารถดึงข้อมูลได้อัตโนมัติ (กรุณาตรวจสอบว่าใน Apps Script มีฟังก์ชัน doGet หรือยัง)
+                        ไม่สามารถดึงข้อมูลได้อัตโนมัติ (กรุณาตรวจสอบว่าฝั่ง Google Apps Script ได้ก๊อปปี้ฟังก์ชัน doGet ลงไปด้วยหรือยัง และทำการบันทึก Deploy เรียบร้อยแล้วหรือยังนะครับ)
                     </td></tr>`;
             }
         }
@@ -187,13 +186,13 @@
                     filtered = filtered.filter(item => item.paymentDate === targetDate);
                 }
             } else if (mode === 'month') {
-                const targetMonth = document.getElementById('filterMonth').value; // คืนค่า "YYYY-MM"
+                const targetMonth = document.getElementById('filterMonth').value; // จะได้ในรูปแบบ "YYYY-MM"
                 if (targetMonth) {
                     filtered = filtered.filter(item => item.paymentDate && item.paymentDate.startsWith(targetMonth));
                 }
             }
 
-            // 2. ระบบเรียงลำดับ (Sorting) ตามบรีฟเป๊ะๆ: เลขที่ (น้อย -> มาก) และ วันที่ (เก่า -> ใหม่)
+            // 2. ระบบเรียงลำดับ (Sorting) ตามบรีฟเป๊ะๆ: เลขที่ (น้อย -> มาก) และ วันที่ (อดีต -> ปัจจุบัน)
             filtered.sort((a, b) => {
                 if (parseInt(a.studentId) !== parseInt(b.studentId)) {
                     return parseInt(a.studentId) - parseInt(b.studentId);
@@ -218,8 +217,8 @@
                     year: 'numeric'
                 });
 
-                // ตรวจสอบว่ามีลิงก์รูปภาพสลิปหรือไม่
-                const slipElement = item.slipUrl 
+                // ตรวจสอบว่าในคอลัมน์ของชีทมีลิงก์รูปภาพสลิปที่ส่งมาจากไดรฟ์ไหม
+                const slipElement = (item.slipUrl && item.slipUrl !== "ไม่มีการแนบรูปภาพ") 
                     ? `<a href="${item.slipUrl}" target="_blank"><img src="${item.slipUrl}" class="slip-img" alt="สลิป"></a>` 
                     : 'ไม่มีรูปภาพ';
 
@@ -237,7 +236,7 @@
             window.location.href = 'admin-login.html';
         }
 
-        // เริ่มโหลดข้อมูลทันทีที่เปิดหน้าจอ
+        // เริ่มดึงข้อมูลทันทีเมื่อโหลดหน้าจอสำเร็จ
         window.onload = fetchSheetData;
     </script>
 </body>
