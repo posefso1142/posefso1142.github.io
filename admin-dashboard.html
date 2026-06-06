@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบหลังบ้านแอดมิน</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ขยายขนาด container ให้เหมาะกับการแสดงตารางกว้างๆ แต่ยังคงสไตล์ดั้งเดิมไว้ */
+        .container.dashboard {
+            max-width: 900px;
+            width: 95%;
+        }
+        .filter-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filter-group {
+            flex: 1;
+            min-width: 150px;
+        }
+        .filter-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        .filter-group select, .filter-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Itim', cursive;
+        }
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 15px;
+            border-radius: 12px;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            background: #fff;
+        }
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background-color: #f8f9fa;
+            color: #333;
+            font-weight: bold;
+        }
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+        .logout-btn {
+            background: #ef4444 !important;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // ระบบความปลอดภัย: ตรวจสอบการล็อกอินเบื้องต้น
+        if (sessionStorage.getItem('isAdminLoggedIn') !== 'true') {
+            alert('กรุณาเข้าสู่ระบบก่อนครับ');
+            window.location.href = 'admin-login.html';
+        }
+    </script>
+
+    <div class="container dashboard">
+        <h1>ข้อมูลการจ่ายเงินทั้งหมด</h1>
+
+        <div class="filter-section">
+            <div class="filter-group">
+                <label for="filterSelect">เลือกรูปแบบการกรอง</label>
+                <select id="filterSelect" onchange="toggleFilterInputs()">
+                    <option value="all">แสดงทั้งหมด</option>
+                    <option value="date">เลือกตามวัน</option>
+                    <option value="month">เลือกตามเดือน</option>
+                </select>
+            </div>
+            <div class="filter-group" id="dateInputGroup" style="display: none;">
+                <label for="filterDate">เลือกวันที่</label>
+                <input type="date" id="filterDate" onchange="filterAndRenderData()">
+            </div>
+            <div class="filter-group" id="monthInputGroup" style="display: none;">
+                <label for="filterMonth">เลือกเดือน</label>
+                <input type="month" id="filterMonth" onchange="filterAndRenderData()">
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>เลขที่</th>
+                        <th>วันที่จ่าย</th>
+                        </tr>
+                </thead>
+                <tbody id="dataTableBody">
+                    </tbody>
+            </table>
+        </div>
+
+        <button class="logout-btn" onclick="logout()">ออกจากระบบ</button>
+    </div>
+
+    <script>
+        // ข้อมูลจำลอง (เดี๋ยวรอสคริปต์เชื่อม Google Sheets จริงจากนายมาแทนที่)
+        let rawData = [
+            { studentId: 5, paymentDate: '2026-06-02' },
+            { studentId: 1, paymentDate: '2026-05-15' },
+            { studentId: 2, paymentDate: '2026-06-01' },
+            { studentId: 1, paymentDate: '2026-06-01' },
+            { studentId: 12, paymentDate: '2026-04-20' }
+        ];
+
+        // ฟังก์ชันสลับการแสดงผลกล่อง Input ตัวกรอง
+        function toggleFilterInputs() {
+            const mode = document.getElementById('filterSelect').value;
+            document.getElementById('dateInputGroup').style.display = mode === 'date' ? 'block' : 'none';
+            document.getElementById('monthInputGroup').style.display = mode === 'month' ? 'block' : 'none';
+            filterAndRenderData();
+        }
+
+        // ฟังก์ชันจัดเรียงข้อมูลและแสดงผลลงตาราง
+        function filterAndRenderData() {
+            const mode = document.getElementById('filterSelect').value;
+            let filtered = [...rawData];
+
+            // 1. จัดการตัวกรอง (Filter)
+            if (mode === 'date') {
+                const targetDate = document.getElementById('filterDate').value;
+                if (targetDate) {
+                    filtered = filtered.filter(item => item.paymentDate === targetDate);
+                }
+            } else if (mode === 'month') {
+                const targetMonth = document.getElementById('filterMonth').value; // รูปแบบ "YYYY-MM"
+                if (targetMonth) {
+                    filtered = filtered.filter(item => item.paymentDate.startsWith(targetMonth));
+                }
+            }
+
+            // 2. ระบบเรียงลำดับ (Sorting) ตามบรีฟ: เลขที่ (น้อย -> มาก) -> วันที่ (เก่า -> ใหม่)
+            filtered.sort((a, b) => {
+                // เรียงตามเลขที่ก่อน
+                if (parseInt(a.studentId) !== parseInt(b.studentId)) {
+                    return parseInt(a.studentId) - parseInt(b.studentId);
+                }
+                // ถ้าเลขที่เท่ากัน ให้เรียงตามวันที่ (เดือนเก่าไปเดือนใหม่ / วันน้อยไปวันมาก)
+                return new Date(a.paymentDate) - new Date(b.paymentDate);
+            });
+
+            // 3. เรนเดอร์ข้อมูลลงใน HTML
+            const tbody = document.getElementById('dataTableBody');
+            tbody.innerHTML = '';
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="2" style="text-align:center;">ไม่พบข้อมูล</td></tr>';
+                return;
+            }
+
+            filtered.forEach(item => {
+                // แปลงรูปแบบวันที่โชว์ให้สวยงาม (วว/ดด/ปปปป)
+                const dateObj = new Date(item.paymentDate);
+                const formattedDate = dateObj.toLocaleDateString('th-TH', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+
+                const row = `<tr>
+                    <td>${item.studentId}</td>
+                    <td>${formattedDate}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function logout() {
+            sessionStorage.removeItem('isAdminLoggedIn');
+            window.location.href = 'admin-login.html';
+        }
+
+        // สั่งให้ทำงานครั้งแรกเมื่อเปิดหน้าจอ
+        window.onload = filterAndRenderData;
+    </script>
+</body>
+</html>
