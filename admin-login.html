@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เข้าสู่ระบบแอดมิน</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* สไตล์เพิ่มเติมเพื่อให้เนียนกับธีมเดิม */
+        .back-btn {
+            display: block;
+            margin-top: 15px;
+            text-align: center;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ผู้ดูแลระบบ (Admin)</h1>
+        <form id="adminLoginForm">
+            <div class="form-group">
+                <label for="adminUser">Username</label>
+                <input type="text" id="adminUser" placeholder="กรอกชื่อผู้ใช้" required>
+            </div>
+            <div class="form-group">
+                <label for="adminPass">Password</label>
+                <input type="password" id="adminPass" placeholder="กรอกรหัสผ่าน" required>
+            </div>
+            <button type="submit">เข้าสู่ระบบ</button>
+            <a href="index.html" class="back-btn">ย้อนกลับหน้าหลัก</a>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const user = document.getElementById('adminUser').value;
+            const pass = document.getElementById('adminPass').value;
+
+            // ตรวจสอบ Username และ Password ตามที่ตั้งค่าไว้
+            if (user === 'ADMIN_SMTE20' && pass === 'SMTE_202020') {
+                sessionStorage.setItem('isAdminLoggedIn', 'true');
+                window.location.href = 'admin-dashboard.html'; // ไปหน้าตารางข้อมูล
+            } else {
+                alert('Username หรือ Password ไม่ถูกต้อง!');
+            }
+        });
+    </script>
+</body>
+</html>
