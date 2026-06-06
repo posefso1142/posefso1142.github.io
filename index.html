@@ -18,7 +18,7 @@
 
     <div class="container">
         <h1>จ่ายเงินประจำสัปดาห์</h1>
-        <form id="paymentForm">
+        <form onsubmit="return false;"> 
             <div class="form-group">
                 <label for="studentId">เลขที่ของคุณ</label>
                 <input type="number" id="studentId" placeholder="กรอกเฉพาะตัวเลข เช่น 1" required>
@@ -27,9 +27,29 @@
                 <label for="paymentDate">วันที่จ่าย</label>
                 <input type="date" id="paymentDate" required>
             </div>
-            <button type="submit">ถัดไป</button>
+            <button type="button" onclick="goToNextPage()">ถัดไป</button>
         </form>
     </div>
-    <script src="script.js"></script>
+
+    <script>
+        // ฟังก์ชันสั่งย้ายหน้าแบบบังคับตรง ๆ จากปุ่ม
+        function goToNextPage() {
+            const studentId = document.getElementById('studentId').value;
+            const paymentDate = document.getElementById('paymentDate').value;
+            
+            // เช็กว่ากรอกข้อมูลหรือยัง
+            if (!studentId || !paymentDate) {
+                alert('กรุณากรอกข้อมูลให้ครบถ้วนก่อนน้า');
+                return;
+            }
+
+            // บันทึกข้อมูลลงเครื่อง
+            localStorage.setItem('studentId', studentId);
+            localStorage.setItem('paymentDate', paymentDate);
+
+            // บังคับเปลี่ยนหน้าทันที ไปยังหน้า payment.html
+            window.location.href = 'payment.html';
+        }
+    </script>
 </body>
 </html>
