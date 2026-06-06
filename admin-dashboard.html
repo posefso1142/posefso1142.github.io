@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* ขยายพื้นที่ให้ตาราง และรักษา UX/UI ดั้งเดิม */
         body {
             font-family: 'Prompt', sans-serif !important;
         }
@@ -18,40 +17,65 @@
             width: 95%;
             margin: 40px auto;
         }
+        /* ปรับแต่งโซนตัวกรองใหม่ให้ออกแนวมินิมอล */
         .filter-section {
-            display: flex;
-            gap: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 16px;
             margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             flex-wrap: wrap;
-            background: rgba(255, 255, 255, 0.6);
-            padding: 15px;
-            border-radius: 12px;
+            gap: 15px;
         }
-        .filter-group {
-            flex: 1;
-            min-width: 180px;
-        }
-        .filter-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
+        .filter-title {
+            font-size: 1.1rem;
             font-weight: 700;
             color: #333;
+            margin: 0;
         }
-        .filter-group select, .filter-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+        .filter-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .filter-input-wrapper input[type="date"] {
+            padding: 10px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.95rem;
+            color: #333;
+            outline: none;
+            transition: border-color 0.2s;
+            background: #fff;
+        }
+        .filter-input-wrapper input[type="date"]:focus {
+            border-color: #3b82f6;
+        }
+        .clear-filter-btn {
+            background: #f1f5f9;
+            color: #64748b;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            cursor: pointer;
             font-family: 'Prompt', sans-serif;
             font-size: 0.9rem;
-            box-sizing: border-box;
+            font-weight: 500;
+            transition: all 0.2s;
         }
+        .clear-filter-btn:hover {
+            background: #e2e8f0;
+            color: #334155;
+        }
+        /* โครงสร้างตาราง */
         .table-responsive {
             overflow-x: auto;
-            margin-top: 15px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
             background: #fff;
         }
         table {
@@ -60,23 +84,56 @@
             text-align: left;
         }
         th, td {
-            padding: 14px 18px;
-            border-bottom: 1px solid #eee;
+            padding: 16px 20px;
+            border-bottom: 1px solid #f1f5f9;
             font-size: 0.95rem;
+            vertical-align: middle;
         }
         th {
-            background-color: #f8f9fa;
-            color: #333;
+            background-color: #f8fafc;
+            color: #475569;
             font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
         }
         tr:hover {
             background-color: #f8fafc;
         }
+        /* แต่งปุ่ม ดูสลิป ให้สวยพรีเมียมตามสั่ง */
+        .view-slip-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white !important;
+            text-decoration: none !important;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            transition: all 0.2s ease;
+        }
+        .view-slip-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+            filter: brightness(1.05);
+        }
+        .view-slip-btn:active {
+            transform: translateY(1px);
+        }
+        .no-slip-text {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
         .loading-text {
             text-align: center;
-            padding: 20px;
+            padding: 30px;
             font-size: 1.1rem;
-            color: #666;
+            color: #64748b;
         }
         .logout-btn {
             background: #ef4444 !important;
@@ -84,21 +141,12 @@
             width: auto !important;
             padding: 10px 25px !important;
             float: right;
-        }
-        .slip-img {
-            max-width: 60px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        .slip-img:hover {
-            transform: scale(1.1);
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
     <script>
-        // ระบบความปลอดภัย: ตรวจสอบสถานะการล็อกอินก่อนเข้าหน้าเว็บ
         if (sessionStorage.getItem('isAdminLoggedIn') !== 'true') {
             alert('กรุณาเข้าสู่ระบบก่อนครับ');
             window.location.href = 'admin-login.html';
@@ -109,21 +157,10 @@
         <h1>ข้อมูลการจ่ายเงิน (แอดมิน)</h1>
 
         <div class="filter-section">
-            <div class="filter-group">
-                <label for="filterSelect">รูปแบบการกรองข้อมูล</label>
-                <select id="filterSelect" onchange="toggleFilterInputs()">
-                    <option value="all">แสดงทั้งหมด</option>
-                    <option value="date">เลือกตามวัน</option>
-                    <option value="month">เลือกตามเดือน</option>
-                </select>
-            </div>
-            <div class="filter-group" id="dateInputGroup" style="display: none;">
-                <label for="filterDate">เลือกวันที่</label>
+            <p class="filter-title">รายการชำระเงินทั้งหมด</p>
+            <div class="filter-input-wrapper">
                 <input type="date" id="filterDate" onchange="filterAndRenderData()">
-            </div>
-            <div class="filter-group" id="monthInputGroup" style="display: none;">
-                <label for="filterMonth">เลือกเดือน</label>
-                <input type="month" id="filterMonth" onchange="filterAndRenderData()">
+                <button class="clear-filter-btn" onclick="clearFilter()">แสดงทั้งหมด</button>
             </div>
         </div>
 
@@ -133,7 +170,7 @@
                     <tr>
                         <th>เลขที่</th>
                         <th>วันที่จ่าย</th>
-                        <th>หลักฐาน (สลิป)</th>
+                        <th>หลักฐานการโอน</th>
                     </tr>
                 </thead>
                 <tbody id="dataTableBody">
@@ -148,11 +185,9 @@
     </div>
 
     <script>
-        // ใส่ URL Web App ของนายตรงนี้ให้เรียบร้อยแล้วครับ
         const googleAppsScriptUrl = "https://script.google.com/macros/s/AKfycbw4JEb0sbTjHAKZlX2_Ecxp-5Wp8fuXymfQjcrnAbT9F9i6Md3P8a1Iz7XDveQEhHiu/exec"; 
         let rawData = [];
 
-        // ฟังก์ชันดึงข้อมูลแบบ Real-time จาก Sheets ด้วยวิธี GET
         async function fetchSheetData() {
             try {
                 const response = await fetch(googleAppsScriptUrl);
@@ -162,37 +197,28 @@
             } catch (error) {
                 console.error("Error fetching data:", error);
                 document.getElementById('dataTableBody').innerHTML = `
-                    <tr><td colspan="3" style="text-align:center; color:red;">
-                        ไม่สามารถดึงข้อมูลได้อัตโนมัติ (กรุณาตรวจสอบว่าฝั่ง Google Apps Script ได้ก๊อปปี้ฟังก์ชัน doGet ลงไปด้วยหรือยัง และทำการบันทึก Deploy เรียบร้อยแล้วหรือยังนะครับ)
+                    <tr><td colspan="3" style="text-align:center; color:#ef4444; font-weight:500; padding:20px;">
+                        ไม่สามารถดึงข้อมูลได้อัตโนมัติ กรุณาเช็กการ Deploy บน Apps Script อีกครั้งครับ
                     </td></tr>`;
             }
         }
 
-        function toggleFilterInputs() {
-            const mode = document.getElementById('filterSelect').value;
-            document.getElementById('dateInputGroup').style.display = mode === 'date' ? 'block' : 'none';
-            document.getElementById('monthInputGroup').style.display = mode === 'month' ? 'block' : 'none';
+        // ฟังก์ชันล้างตัวกรองกลับมาโชว์ทั้งหมด
+        function clearFilter() {
+            document.getElementById('filterDate').value = '';
             filterAndRenderData();
         }
 
         function filterAndRenderData() {
-            const mode = document.getElementById('filterSelect').value;
+            const targetDate = document.getElementById('filterDate').value; // จะได้ฟอร์แมต "YYYY-MM-DD"
             let filtered = [...rawData];
 
-            // 1. ระบบตัวกรองข้อมูล (Filter)
-            if (mode === 'date') {
-                const targetDate = document.getElementById('filterDate').value;
-                if (targetDate) {
-                    filtered = filtered.filter(item => item.paymentDate === targetDate);
-                }
-            } else if (mode === 'month') {
-                const targetMonth = document.getElementById('filterMonth').value; // จะได้ในรูปแบบ "YYYY-MM"
-                if (targetMonth) {
-                    filtered = filtered.filter(item => item.paymentDate && item.paymentDate.startsWith(targetMonth));
-                }
+            // ถ้าระบุวันที่ในปฏิทิน ให้ทำการกรองข้อมูล
+            if (targetDate) {
+                filtered = filtered.filter(item => item.paymentDate === targetDate);
             }
 
-            // 2. ระบบเรียงลำดับ (Sorting) ตามบรีฟเป๊ะๆ: เลขที่ (น้อย -> มาก) และ วันที่ (อดีต -> ปัจจุบัน)
+            // ระบบจัดเรียงข้อมูล: เลขที่ (น้อย -> มาก) และ วันที่จ่าย (เก่า -> ใหม่)
             filtered.sort((a, b) => {
                 if (parseInt(a.studentId) !== parseInt(b.studentId)) {
                     return parseInt(a.studentId) - parseInt(b.studentId);
@@ -200,12 +226,11 @@
                 return new Date(a.paymentDate) - new Date(b.paymentDate);
             });
 
-            // 3. แสดงผลลงตาราง HTML
             const tbody = document.getElementById('dataTableBody');
             tbody.innerHTML = '';
 
             if (filtered.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">ไม่พบข้อมูลการชำระเงิน</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#64748b; padding:20px;">ไม่พบข้อมูลในวันที่เลือก</td></tr>';
                 return;
             }
 
@@ -217,14 +242,17 @@
                     year: 'numeric'
                 });
 
-                // ตรวจสอบว่าในคอลัมน์ของชีทมีลิงก์รูปภาพสลิปที่ส่งมาจากไดรฟ์ไหม
+                // สร้างปุ่มดูสลิปดีไซน์พรีเมียมตามบรีฟ
                 const slipElement = (item.slipUrl && item.slipUrl !== "ไม่มีการแนบรูปภาพ") 
-                    ? `<a href="${item.slipUrl}" target="_blank"><img src="${item.slipUrl}" class="slip-img" alt="สลิป"></a>` 
-                    : 'ไม่มีรูปภาพ';
+                    ? `<a href="${item.slipUrl}" target="_blank" class="view-slip-btn">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        ดูสลิป
+                       </a>` 
+                    : `<span class="no-slip-text">ไม่มีหลักฐาน</span>`;
 
                 const row = `<tr>
-                    <td><strong>${item.studentId}</strong></td>
-                    <td>${formattedDate}</td>
+                    <td><span style="font-weight:600; color:#1e293b;">${item.studentId}</span></td>
+                    <td style="color:#334155;">${formattedDate}</td>
                     <td>${slipElement}</td>
                 </tr>`;
                 tbody.innerHTML += row;
@@ -236,7 +264,6 @@
             window.location.href = 'admin-login.html';
         }
 
-        // เริ่มดึงข้อมูลทันทีเมื่อโหลดหน้าจอสำเร็จ
         window.onload = fetchSheetData;
     </script>
 </body>
