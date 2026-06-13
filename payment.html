@@ -15,17 +15,101 @@
         <p>โปรดสแกน QR Code เพื่อโอนเงิน:</p>
         <div class="qr-box">
             <h2 style="color: #0d47a1;">QR Code สำหรับการโอนเงิน</h2>
-            <img src="my-qr-code.png" alt="QR Code" style="width: 200px; height: 200px;">
-            <p>ยอดเงิน: 20 บาท</p>
+            
+            <img id="qrCodeImage" src="my-qr-code.png" alt="QR Code" style="width: 200px; height: 200px;">
+            
+            <p id="priceText">กำลังตรวจสอบยอดเงิน...</p>
         </div>
         <div class="button-container">
             <button id="transferComplete" style="background-color: #03a9f4;">โอนเสร็จสิ้นแล้ว</button>
         </div>
     </div>
+    
     <script>
+        // ปุ่มโอนเสร็จสิ้นทำงานเหมือนเดิม
         document.getElementById('transferComplete').addEventListener('click', function() {
             window.location.href = 'confirm.html';
         });
+
+        // ========================================================
+        // ส่วนของฟังก์ชันตรวจสอบประวัติและเปลี่ยน QR Code อัตโนมัติ
+        // ========================================================
+        
+        async function checkAndSwitchQR() {
+            const qrImage = document.getElementById("qrCodeImage");
+            const priceText = document.getElementById("priceText");
+
+            // 1. ระบุชื่อไฟล์รูปภาพ QR Code ของนายตรงนี้
+            const qr50Url = "qr-code-50.png"; // เปลี่ยนเป็นชื่อไฟล์คิวอาร์ 50 บาทของนาย
+            const qr70Url = "my-qr-code.png";  // ใช้คิวอาร์เดิมสำหรับยอด 70 บาท
+
+            // 2. ดึงเลขที่ (studentId) ของคนที่กำลังใช้งาน
+            // (ดึงมาจาก sessionStorage ที่น่าจะเซฟไว้ตอนล็อกอิน/กรอกเลขที่จากหน้า index หรือใส่เป็นตัวเลขตรงๆ ไว้ทดสอบก่อนได้ครับ)
+            const studentId = sessionStorage.getItem("studentId") || localStorage.getItem("studentId");
+            
+            if (!studentId) {
+                console.warn("ไม่พบรหัส studentId ระบบจะปรับเป็นยอด 70 บาทอัตโนมัติ");
+                qrImage.src = qr70Url;
+                priceText.innerText = "ยอดเงิน: 70 บาท (ไม่พบข้อมูลผู้ใช้)";
+                return;
+            }
+
+            // 3. ใส่รหัส Google Sheet ID ของตารางในรูปแรกตรงนี้
+            // ⚠️ อย่าลืมแชร์สิทธิ์ Google Sheet ให้เป็น "ทุกคนที่มีลิงก์ (Anyone with link)" ก่อนนะ
+            const sheetId = "YOUR_GOOGLE_SHEET_ID_HERE"; 
+            const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
+
+            try {
+                const response = await fetch(url);
+                const text = await response.text();
+                
+                // แปลงข้อความที่ได้จาก Google Sheet ให้เป็น JSON
+                const jsonData = JSON.parse(text.substring(47, text.length - 2));
+                const rows = jsonData.table.rows;
+
+                // ตั้งรอบวันที่ตรวจจับ: 9 มิ.ย. 2026 ถึง 13 มิ.ย. 2026
+                const startDate = new Date("2026-06-09T00:00:00");
+                const endDate = new Date("2026-06-13T23:59:59");
+                
+                let hasPaidThisWeek = false;
+
+                // วนลูปตรวจเช็กประวัติทีละแถว
+                for (let row of rows) {
+                    const rowStudentId = row.c[1] ? row.c[1].v : null;     // คอลัมน์ studentId
+                    const rowPaymentDateStr = row.c[2] ? row.c[2].f : null; // คอลัมน์ paymentDate
+
+                    if (rowStudentId && Number(rowStudentId) === Number(studentId)) {
+                        const pDate = new Date(rowPaymentDateStr);
+
+                        // เช็กว่าวันที่ลงบันทึกอยู่ในช่วง 9 - 13 มิ.ย. หรือไม่
+                        if (pDate >= startDate && pDate <= endDate) {
+                            hasPaidThisWeek = true;
+                            break; // เจอแล้วว่าจ่ายสัปดาห์นี้แล้ว หยุดลูปทันที
+                        }
+                    }
+                }
+
+                // 4. สลับรูป QR Code และเปลี่ยนข้อความยอดเงินตามผลลัพธ์
+                if (hasPaidThisWeek) {
+                    qrImage.src = qr50Url;
+                    priceText.innerText = "ยอดเงิน: 50 บาท (เนื่องจากจ่ายเงินห้องสัปดาห์นี้แล้ว)";
+                    priceText.style.color = "#2e7d32"; // แสดงสีเขียว
+                } else {
+                    qrImage.src = qr70Url;
+                    priceText.innerText = "ยอดเงิน: 70 บาท (ค้างจ่ายเงินห้องรอบสัปดาห์ 9-13 มิ.ย.)";
+                    priceText.style.color = "#c62828"; // แสดงสีแดง
+                }
+
+            } catch (error) {
+                console.error("เชื่อมต่อฐานข้อมูลล้มเหลว:", error);
+                // หากระบบตรวจเช็กพัง ให้กันเหนียวด้วยการแสดงยอดปกติ 70 บาทไว้ก่อน
+                qrImage.src = qr70Url;
+                priceText.innerText = "ยอดเงิน: 70 บาท";
+            }
+        }
+
+        // สั่งให้ฟังก์ชันเริ่มทำงานทันทีเมื่อหน้าเว็บโหลดเสร็จ
+        window.onload = checkAndSwitchQR;
     </script>
 </body>
 </html>
