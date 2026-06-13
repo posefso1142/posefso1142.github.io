@@ -7,21 +7,134 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* รีเซ็ตค่าพื้นฐานและตั้งค่าฟอนต์ */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Itim', cursive, sans-serif;
+        }
+
+        body {
+            background-color: #f5f6fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* กล่องคอนเทนเนอร์หลักรองรับทุกหน้าจอ */
+        .container {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 450px; /* ขนาดลงตัวพอดีทั้งบนมือถือและคอม */
+            padding: 30px 24px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            margin-bottom: 24px;
+        }
+
+        /* กล่อง QR Code ดีไซน์มินิมอล เส้นประ */
+        .qr-box {
+            border: 2px dashed #03a9f4;
+            border-radius: 20px;
+            padding: 24px 16px;
+            background-color: #fbfcfe;
+            margin-bottom: 24px;
+        }
+
+        .qr-box h2 {
+            font-size: 1.25rem;
+            color: #0d47a1;
+            margin-bottom: 16px;
+        }
+
+        /* รูปภาพขยายและหดตามขนาดหน้าจออัตโนมัติ ไม่ยืดไม่เบี้ยว */
+        .qr-box img {
+            width: 100%;
+            max-width: 220px;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            object-fit: contain;
+            margin-bottom: 16px;
+            border-radius: 12px;
+        }
+
+        /* ข้อความแจ้งเตือนยอดเงินหลัก */
+        #priceText {
+            font-size: 1.3rem;
+            font-weight: bold;
+            line-height: 1.4;
+        }
+
+        /* ส่วนของข้อความในวงเล็บที่จะถูกดีดลงมาบรรทัดใหม่ */
+        .sub-text {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: normal;
+            margin-top: 6px;
+        }
+
+        /* ปุ่มกดโอนเสร็จสิ้นแบบเต็มความกว้าง จิ้มง่ายบนมือถือ */
+        .button-container {
+            width: 100%;
+        }
+
+        #transferComplete {
+            width: 100%;
+            background-color: #03a9f4;
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 1.2rem;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(3, 169, 244, 0.3);
+        }
+
+        #transferComplete:hover {
+            background-color: #039be5;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(3, 169, 244, 0.4);
+        }
+
+        #transferComplete:active {
+            transform: translateY(0);
+        }
+    </style>
 </head>
 <body>
+
     <div class="container">
         <h1>หน้าโอนเงิน</h1>
-        <p>โปรดสแกน QR Code เพื่อโอนเงิน:</p>
+        <p class="subtitle">โปรดสแกน QR Code เพื่อโอนเงิน:</p>
+        
         <div class="qr-box">
-            <h2 style="color: #0d47a1;">QR Code สำหรับการโอนเงิน</h2>
+            <h2>QR Code สำหรับการโอนเงิน</h2>
             
-            <img id="qrCodeImage" src="my-qr-code.png" alt="QR Code" style="width: 200px; height: 200px;">
+            <img id="qrCodeImage" src="my-qr-code.png" alt="QR Code">
             
             <p id="priceText">กำลังตรวจสอบยอดเงิน...</p>
         </div>
+        
         <div class="button-container">
-            <button id="transferComplete" style="background-color: #03a9f4;">โอนเสร็จสิ้นแล้ว</button>
+            <button id="transferComplete">โอนเสร็จสิ้นแล้ว</button>
         </div>
     </div>
     
@@ -49,12 +162,12 @@
             if (!studentId) {
                 console.warn("ไม่พบรหัส studentId ระบบจะปรับเป็นยอด 70 บาทอัตโนมัติ");
                 qrImage.src = qr70Url;
-                priceText.innerText = "ยอดเงิน: 70 บาท (ไม่พบข้อมูลผู้ใช้)";
+                priceText.style.color = "#c62828";
+                priceText.innerHTML = "ยอดเงิน: 70 บาท <span class='sub-text' style='color: #7f8c8d;'>(ไม่พบข้อมูลผู้ใช้)</span>";
                 return;
             }
 
-            // 3. ใส่รหัส Google Sheet ID ของตารางในรูปแรกตรงนี้ (ใส่ไอดีจริงให้แล้วครับ)
-            // ⚠️ อย่าลืมแชร์สิทธิ์ Google Sheet ให้เป็น "ทุกคนที่มีลิงก์ (Anyone with link)" ก่อนนะ
+            // 3. ใส่รหัส Google Sheet ID ของตารางในรูปแรกตรงนี้
             const sheetId = "1QlUHO9UW_1JLPK_kLAd2DOfBj8EIZBqvCOYCoV0bhso"; 
             const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
 
@@ -72,7 +185,7 @@
                 
                 let hasPaidThisWeek = false;
 
-                // --- 💥 วางลูปตรวจเช็กแบบใหม่ที่ปรับปรุงแล้วตรงนี้ 💥 ---
+                // --- วางลูปตรวจเช็กแบบใหม่ที่ปรับปรุงแล้วตรงนี้ ---
                 for (let row of rows) {
                     // ดึงค่า studentId (คอลัมน์ B)
                     const rowStudentId = row.c[1] ? row.c[1].v : null;     
@@ -96,22 +209,22 @@
                 }
                 // --------------------------------------------------
 
-                // 4. สลับรูป QR Code และเปลี่ยนข้อความยอดเงินตามผลลัพธ์
+                // 4. สลับรูป QR Code และเปลี่ยนข้อความยอดเงินตามผลลัพธ์ (แยกบรรทัดผ่าน .innerHTML)
                 if (hasPaidThisWeek) {
                     qrImage.src = qr50Url;
-                    priceText.innerText = "ยอดเงิน: 50 บาท (เนื่องจากจ่ายเงินห้องสัปดาห์นี้แล้ว)";
-                    priceText.style.color = "#2e7d32"; // แสดงสีเขียว
+                    priceText.style.color = "#2e7d32"; // ยอดเงินตัวใหญ่สีเขียวเข้ม
+                    priceText.innerHTML = "ยอดเงิน: 50 บาท <span class='sub-text' style='color: #4caf50;'>(เนื่องจากจ่ายเงินห้องสัปดาห์นี้แล้ว)</span>";
                 } else {
                     qrImage.src = qr70Url;
-                    priceText.innerText = "ยอดเงิน: 70 บาท (ค้างจ่ายเงินห้องรอบสัปดาห์ 9-13 มิ.ย.)";
-                    priceText.style.color = "#c62828"; // แสดงสีแดง
+                    priceText.style.color = "#c62828"; // ยอดเงินตัวใหญ่สีแดงเข้ม
+                    priceText.innerHTML = "ยอดเงิน: 70 บาท <span class='sub-text' style='color: #e53935;'>(ค้างจ่ายเงินห้องรอบสัปดาห์ 9-13 มิ.ย.)</span>";
                 }
 
             } catch (error) {
                 console.error("เชื่อมต่อฐานข้อมูลล้มเหลว:", error);
-                // หากระบบตรวจเช็กพัง ให้กันเหนียวด้วยการแสดงยอดปกติ 70 บาทไว้ก่อน
                 qrImage.src = qr70Url;
-                priceText.innerText = "ยอดเงิน: 70 บาท";
+                priceText.style.color = "#c62828";
+                priceText.innerHTML = "ยอดเงิน: 70 บาท <span class='sub-text' style='color: #7f8c8d;'>(ระบบฐานข้อมูลขัดข้อง)</span>";
             }
         }
 
