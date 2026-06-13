@@ -44,7 +44,6 @@
             const qr70Url = "my-qr-code.png";  // ใช้คิวอาร์เดิมสำหรับยอด 70 บาท
 
             // 2. ดึงเลขที่ (studentId) ของคนที่กำลังใช้งาน
-            // (ดึงมาจาก sessionStorage ที่น่าจะเซฟไว้ตอนล็อกอิน/กรอกเลขที่จากหน้า index หรือใส่เป็นตัวเลขตรงๆ ไว้ทดสอบก่อนได้ครับ)
             const studentId = sessionStorage.getItem("studentId") || localStorage.getItem("studentId");
             
             if (!studentId) {
@@ -73,21 +72,29 @@
                 
                 let hasPaidThisWeek = false;
 
-                // วนลูปตรวจเช็กประวัติทีละแถว
+                // --- 💥 วางลูปตรวจเช็กแบบใหม่ที่ปรับปรุงแล้วตรงนี้ 💥 ---
                 for (let row of rows) {
-                    const rowStudentId = row.c[1] ? row.c[1].v : null;     // คอลัมน์ studentId
-                    const rowPaymentDateStr = row.c[2] ? row.c[2].f : null; // คอลัมน์ paymentDate
+                    // ดึงค่า studentId (คอลัมน์ B)
+                    const rowStudentId = row.c[1] ? row.c[1].v : null;     
+                    
+                    // ดึงค่า paymentDate (คอลัมน์ C) ลองเช็กทั้งรูปแบบข้อความ (.f) หรือค่าดิบ (.v)
+                    const rowPaymentDateStr = row.c[2] ? (row.c[2].f || row.c[2].v) : null; 
 
                     if (rowStudentId && Number(rowStudentId) === Number(studentId)) {
-                        const pDate = new Date(rowPaymentDateStr);
+                        if (rowPaymentDateStr) {
+                            // ตัดข้อความเผื่อกรณีระบบกูเกิลส่ง format วันที่มาแปลกๆ ให้เหลือแค่ YYYY-MM-DD
+                            const cleanDateStr = String(rowPaymentDateStr).split(" ")[0]; 
+                            const pDate = new Date(cleanDateStr + "T00:00:00");
 
-                        // เช็กว่าวันที่ลงบันทึกอยู่ในช่วง 9 - 13 มิ.ย. หรือไม่
-                        if (pDate >= startDate && pDate <= endDate) {
-                            hasPaidThisWeek = true;
-                            break; // เจอแล้วว่าจ่ายสัปดาห์นี้แล้ว หยุดลูปทันที
+                            // เช็กว่าวันที่ลงบันทึกอยู่ในช่วง 9 - 13 มิ.ย. หรือไม่
+                            if (pDate >= startDate && pDate <= endDate) {
+                                hasPaidThisWeek = true;
+                                break; // เจอแล้วว่าจ่ายสัปดาห์นี้แล้ว หยุดลูปทันที
+                            }
                         }
                     }
                 }
+                // --------------------------------------------------
 
                 // 4. สลับรูป QR Code และเปลี่ยนข้อความยอดเงินตามผลลัพธ์
                 if (hasPaidThisWeek) {
