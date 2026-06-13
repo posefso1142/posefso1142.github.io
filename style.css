@@ -52,7 +52,7 @@ p { font-size: clamp(0.95rem, 2.8vw, 1.05rem); color: var(--light-text); font-we
 .form-group { margin-bottom: 24px; text-align: left; }
 label { display: block; font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; color: var(--dark-text); padding-left: 4px; }
 
-/* 🛠️ จุดแก้ไขหลัก: บังคับปิดสไตล์ดั้งเดิมของระบบ iOS และจำกัดความกว้างให้พอดีกับกล่องแม่ */
+/* 🛠️ บังคับปิดสไตล์ดั้งเดิมของระบบ iOS และจำกัดความกว้างให้พอดีกับกล่องแม่ */
 input[type="number"], input[type="date"], input {
     width: 100% !important; height: 54px; padding: 0 16px;
     border: 2px solid rgba(0, 0, 0, 0.15) !important;
@@ -158,6 +158,7 @@ button:disabled { background: #aeaeae !important; cursor: not-allowed; opacity: 
     .button-group { flex-direction: column; gap: 12px; }
     .button-group button { order: 1; } #backButton { order: 2; }
 }
+
 /* Admin Button Style for index.html */
 .admin-btn {
     position: fixed;
@@ -171,7 +172,7 @@ button:disabled { background: #aeaeae !important; cursor: not-allowed; opacity: 
     align-items: center;
     justify-content: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    color: #4f46e5; /* สีน้ำเงิน/ม่วงตามโทนปุ่มเดิม */
+    color: #4f46e5;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     z-index: 1000;
 }
@@ -184,4 +185,23 @@ button:disabled { background: #aeaeae !important; cursor: not-allowed; opacity: 
 .admin-btn svg {
     width: 24px;
     height: 24px;
+}
+
+/* ==========================================================================
+   ➕ ส่วนที่อัปเดตเพิ่มเติม: ปรับแต่งหน้าโอนเงินให้สวยงามและแยกบรรทัดในวงเล็บ
+   ========================================================================== */
+#priceText {
+    font-size: clamp(1.2rem, 4vw, 1.4rem);
+    font-weight: 800;
+    line-height: 1.5;
+    margin-top: 10px;
+}
+
+/* จัดสไตล์ข้อความอธิบายในวงเล็บให้ดีดตัวลงบรรทัดใหม่ตามที่ขอ */
+.sub-text {
+    display: block !important;
+    font-size: clamp(0.85rem, 2.5vw, 0.95rem) !important;
+    font-weight: 500 !important;
+    margin-top: 6px;
+    line-height: 1.4;
 }
