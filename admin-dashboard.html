@@ -95,24 +95,33 @@
             color: #334155;
         }
 
-        /* โครงสร้างตาราง */
+        /* โครงสร้างตารางหลัก */
         .table-responsive {
             overflow-x: auto;
             border-radius: 16px;
             box-shadow: 0 4px 24px rgba(0,0,0,0.06);
             background: #fff;
+            width: 100%;
         }
         table {
             width: 100%;
             border-collapse: collapse;
             text-align: left;
+            table-layout: fixed; 
         }
+        
+        /* กำหนดขนาดคอลัมน์มาตรฐานบนหน้าจอคอม */
+        th:nth-child(1), td:nth-child(1) { width: 20%; }
+        th:nth-child(2), td:nth-child(2) { width: 45%; }
+        th:nth-child(3), td:nth-child(3) { width: 35%; }
+
         th, td {
             padding: 16px 20px;
             border-bottom: 1px solid #f1f5f9;
             font-size: 0.95rem;
             vertical-align: middle;
-            white-space: nowrap; /* ป้องกันข้อความในตารางตัดขึ้นบรรทัดใหม่จนเบี้ยว */
+            white-space: nowrap; 
+            box-sizing: border-box;
         }
         th {
             background-color: #f8fafc;
@@ -128,6 +137,7 @@
         .view-slip-btn {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 6px;
             background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             color: white !important;
@@ -139,6 +149,7 @@
             letter-spacing: 0.5px;
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
             transition: all 0.2s ease;
+            box-sizing: border-box;
         }
         .view-slip-btn:hover {
             transform: translateY(-1px);
@@ -171,12 +182,13 @@
         /* ==================== Responsive Style (สำหรับหน้าจอมือถือ) ==================== */
         @media (max-width: 600px) {
             .container.dashboard {
-                margin: 20px auto;
-                padding: 15px !important;
+                margin: 15px auto;
+                padding: 10px !important;
+                width: 98%; /* ขยายหน้าต่างหลักให้กว้างขึ้นเพื่อใช้พื้นที่คุ้ม ๆ */
             }
-            /* บังคับตัดคำว่า (แอดมิน) ลงมาบรรทัดล่าง และลดขนาดลงเล็กน้อยให้พอดีกล่อง */
             .dashboard-title {
-                font-size: 1.6rem;
+                font-size: 1.5rem;
+                margin-bottom: 15px;
             }
             .dashboard-title br.mobile-br {
                 display: block;
@@ -184,8 +196,9 @@
             .filter-section {
                 flex-direction: column;
                 align-items: stretch;
-                padding: 15px;
+                padding: 12px;
                 text-align: center;
+                margin-bottom: 15px;
             }
             .filter-input-wrapper {
                 flex-direction: column;
@@ -198,9 +211,35 @@
             .date-separator {
                 margin: 2px 0;
             }
+            
+            /* [แก้ไขจุดนี้] ปิดระบบเลื่อนสไลด์ด้านข้าง และขยายตารางให้กางเต็มหน้าจอมือถือพอดี 100% */
+            .table-responsive {
+                overflow-x: hidden !important; /* ห้ามสไลด์ออกนอกขอบจอ */
+                width: 100% !important;
+            }
+            table {
+                table-layout: fixed !important;
+                width: 100% !important;
+            }
+            
+            /* เฉลี่ยพื้นที่คอลัมน์ใหม่ตามสัดส่วนสายตาบนมือถือ (เต็มจอพอดีเป๊ะ) */
+            th:nth-child(1), td:nth-child(1) { width: 18% !important; text-align: center; }
+            th:nth-child(2), td:nth-child(2) { width: 44% !important; text-align: center; }
+            th:nth-child(3), td:nth-child(3) { width: 38% !important; text-align: center; }
+
             th, td {
-                padding: 12px 14px;
-                font-size: 0.9rem;
+                padding: 12px 4px !important; /* ลดช่องว่างภายในให้กระชับ เพื่อใช้พื้นที่คุ้มที่สุด */
+                font-size: 0.85rem;  
+                white-space: nowrap; 
+            }
+            .view-slip-btn {
+                padding: 6px 0 !important; /* ปรับปุ่มให้ยืดเต็มช่องคอลัมน์พอดี */
+                font-size: 0.8rem !important;
+                display: flex !important; 
+                width: 100%;
+            }
+            .view-slip-btn svg {
+                display: none !important; /* ซ่อนไอคอนบนมือถือเพื่อประหยัดพื้นที่ */
             }
         }
     </style>
@@ -230,9 +269,9 @@
             <table>
                 <thead>
                     <tr>
-                        <th>เลขที่</th>
-                        <th>วันที่จ่าย</th>
-                        <th>หลักฐานการโอน</th>
+                        <th style="text-align: center;">เลขที่</th>
+                        <th style="text-align: center;">วันที่จ่าย</th>
+                        <th style="text-align: center;">หลักฐาน</th>
                     </tr>
                 </thead>
                 <tbody id="dataTableBody">
@@ -271,7 +310,6 @@
             filterAndRenderData();
         }
 
-        // ฟังก์ชันพิเศษ: ช่วยแปลงวันที่จาก Google Sheets ให้กลายเป็นวัตถุ Date ที่ถูกต้อง ป้องกันบัคฟอร์แมตเพี้ยน
         function parseSheetDate(dateStr) {
             if (!dateStr) return null;
             let cleanStr = String(dateStr).split(/[ T]/)[0]; 
@@ -279,13 +317,11 @@
             return isNaN(parsedDate.getTime()) ? null : parsedDate;
         }
 
-        // ฟังก์ชันกรองข้อมูลแบบช่วงเวลาที่ดักจับได้แม่นยำและเสถียร
         function filterAndRenderData() {
             const startVal = document.getElementById('startDate').value; 
             const endVal = document.getElementById('endDate').value; 
             let filtered = [...rawData];
 
-            // สร้างช่วงเวลาสำหรับการเปรียบเทียบ
             const startDateObj = startVal ? new Date(startVal + "T00:00:00") : null;
             const endDateObj = endVal ? new Date(endVal + "T23:59:59") : null;
 
@@ -306,7 +342,7 @@
                 });
             }
 
-            // [แก้ไขจุดนี้เรียบร้อย] บังคับจัดเรียงข้อมูล: ตามเลขที่จาก น้อย -> มาก (1, 2, 3...) เสมอครับ
+            // จัดเรียงข้อมูล: ตามเลขที่จาก น้อย -> มาก (1, 2, 3...)
             filtered.sort((a, b) => {
                 return parseInt(a.studentId) - parseInt(b.studentId);
             });
@@ -327,17 +363,24 @@
                     year: 'numeric'
                 });
 
-                const slipElement = (item.slipUrl && item.slipUrl !== "ไม่มีการแนบรูปภาพ") 
-                    ? `<a href="${item.slipUrl}" target="_blank" class="view-slip-btn">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                let hasSlip = false;
+                if (item.slipUrl) {
+                    const urlStr = String(item.slipUrl).trim();
+                    if (urlStr !== "" && urlStr !== "ไม่มีการแนบรูปภาพ" && urlStr.startsWith("http")) {
+                        hasSlip = true;
+                    }
+                }
+
+                const slipElement = hasSlip 
+                    ? `<a href="${item.slipUrl.trim()}" target="_blank" class="view-slip-btn">
                         ดูสลิป
                        </a>` 
                     : `<span class="no-slip-text">ไม่มีหลักฐาน</span>`;
 
                 const row = `<tr>
-                    <td><span style="font-weight:600; color:#1e293b;">${item.studentId}</span></td>
-                    <td style="color:#334155;">${formattedDate}</td>
-                    <td>${slipElement}</td>
+                    <td style="text-align: center;"><span style="font-weight:600; color:#1e293b;">${item.studentId}</span></td>
+                    <td style="color:#334155; text-align: center;">${formattedDate}</td>
+                    <td style="text-align: center;">${slipElement}</td>
                 </tr>`;
                 tbody.innerHTML += row;
             });
