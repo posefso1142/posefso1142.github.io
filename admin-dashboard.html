@@ -124,7 +124,7 @@
             background-color: #f8fafc;
         }
 
-        /* ปุ่ม ดูสลิป ดีไซน์พรีเมียม */
+        /* ปุ่ม ดูสลิป ดีไซ็นพรีเมียม */
         .view-slip-btn {
             display: inline-flex;
             align-items: center;
@@ -265,69 +265,6 @@
             }
         }
 
-        // ฟังก์ชันล้างค่าตัวกรองวันที่ทั้งหมด
-        function clearFilter() {
-            document.getElementById('startDate').value = '';
-            document.getElementById('endDate').value = '';
-            filterAndRenderData();
-        }
-
-        // ฟังก์ชันหัวใจหลัก: ตรวจจับและกรองแบบช่วงวันที่ (Date Range)
-        function filterAndRenderData() {
-            const startVal = document.getElementById('startDate').value; 
-            const endVal = document.getElementById('endDate').value; 
-            let filtered = [...rawData];
-
-            // แปลงค่าวันที่ที่กรอกให้กลายเป็นเลข Timestamp เพื่อนำไปเปรียบเทียบค่า (ช่วยป้องกันบัคเรื่อง format วันที่)
-            const startTimestamp = startVal ? new Date(startVal + "T00:00:00").getTime() : null;
-            const endTimestamp = endVal ? new Date(endVal + "T23:59:59").getTime() : null;
-
-            // คัดกรองข้อมูลตามช่วงเวลา
-            if (startTimestamp || endTimestamp) {
-                filtered = filtered.filter(item => {
-                    if (!item.paymentDate) return false;
-                    const currentTimestamp = new Date(item.paymentDate + "T00:00:00").getTime();
-                    
-                    // เงื่อนไข 1: เลือกแค่วันเริ่มต้นอย่างเดียว (เอาตั้งแต่วันนั้นเป็นต้นไป)
-                    if (startTimestamp && !endTimestamp) {
-                        return currentTimestamp >= startTimestamp;
-                    }
-                    // เงื่อนไข 2: เลือกแค่วันสิ้นสุดอย่างเดียว (เอาตั้งแต่วันแรกสุดจนถึงวันนั้น)
-                    if (!startTimestamp && endTimestamp) {
-                        return currentTimestamp <= endTimestamp;
-                    }
-                    // เงื่อนไข 3: เลือกครบทั้งสองฝั่ง (คัดกรองระหว่างกลาง)
-                    return currentTimestamp >= startTimestamp && currentTimestamp <= endTimestamp;
-                });
-            }
-
-            // ระบบจัดเรียงข้อมูล: เลขที่ (น้อย -> มาก) และ วันที่จ่าย (เก่า -> ใหม่)
-            filtered.sort((a, b) => {
-                if (parseInt(a.studentId) !== parseInt(b.studentId)) {
-                    return parseInt(a.studentId) - parseInt(b.studentId);
-                }
-                return new Date(a.paymentDate) - new Date(b.paymentDate);
-            });
-
-            <script>
-        const googleAppsScriptUrl = "https://script.google.com/macros/s/AKfycbw4JEb0sbTjHAKZlX2_Ecxp-5Wp8fuXymfQjcrnAbT9F9i6Md3P8a1Iz7XDveQEhHiu/exec"; 
-        let rawData = [];
-
-        async function fetchSheetData() {
-            try {
-                const response = await fetch(googleAppsScriptUrl);
-                const data = await response.json();
-                rawData = data;
-                filterAndRenderData();
-            } catch (error) {
-                console.error("Error fetching data:", error);
-                document.getElementById('dataTableBody').innerHTML = `
-                    <tr><td colspan="3" style="text-align:center; color:#ef4444; font-weight:500; padding:20px;">
-                        ไม่สามารถดึงข้อมูลได้อัตโนมัติ กรุณาเช็กการ Deploy บน Apps Script อีกครั้งครับ
-                    </td></tr>`;
-            }
-        }
-
         function clearFilter() {
             document.getElementById('startDate').value = '';
             document.getElementById('endDate').value = '';
@@ -337,16 +274,13 @@
         // ฟังก์ชันพิเศษ: ช่วยแปลงวันที่จาก Google Sheets ให้กลายเป็นวัตถุ Date ที่ถูกต้อง ป้องกันบัคฟอร์แมตเพี้ยน
         function parseSheetDate(dateStr) {
             if (!dateStr) return null;
-            
             // กรณีส่งมาเป็นรูปแบบที่มีเวลาปน เช่น "2026-06-14T..." หรือ "2026-06-14 17:30" ให้ตัดเอาเฉพาะวันที่
             let cleanStr = String(dateStr).split(/[ T]/)[0]; 
-            
             const parsedDate = new Date(cleanStr + "T00:00:00");
-            // เช็กว่าแปลงสำเร็จไหม ถ้าสำเร็จส่งกลับไป ถ้าไม่สำเร็จส่ง null
             return isNaN(parsedDate.getTime()) ? null : parsedDate;
         }
 
-        // ฟังก์ชันกรองข้อมูลแบบช่วงเวลาที่แก้ไขใหม่ให้ดักจับได้แม่นยำขึ้น
+        // ฟังก์ชันกรองข้อมูลแบบช่วงเวลาที่ดักจับได้แม่นยำและเสถียร
         function filterAndRenderData() {
             const startVal = document.getElementById('startDate').value; 
             const endVal = document.getElementById('endDate').value; 
@@ -358,11 +292,9 @@
 
             if (startDateObj || endDateObj) {
                 filtered = filtered.filter(item => {
-                    // แปลงวันที่ของแถวนั้นๆ ในฐานข้อมูลให้เป็น Date Object ก่อน
                     const currentDateObj = parseSheetDate(item.paymentDate);
-                    if (!currentDateObj) return false; // ถ้าแถวนั้นไม่มีวันที่ หรือแปลงไม่ได้ ให้ข้ามไปเลย
+                    if (!currentDateObj) return false; 
 
-                    // ตั้งเวลาของข้อมูลในชีตให้อยู่ที่ต้นวันเพื่อการเปรียบเทียบที่เที่ยงตรง
                     const currentTime = currentDateObj.getTime();
 
                     if (startDateObj && !endDateObj) {
@@ -424,3 +356,5 @@
 
         window.onload = fetchSheetData;
     </script>
+</body>
+</html>
