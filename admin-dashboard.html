@@ -307,14 +307,11 @@
                 });
             }
 
-            // ระบบจัดเรียงข้อมูล: เลขที่ (น้อย -> มาก) และ วันที่จ่าย (เก่า -> ใหม่)
+            // [แก้ไขจุดนี้] เปลี่ยนระบบจัดเรียงข้อมูลใหม่: เอาวันที่ล่าสุดขึ้นก่อนเสมอ (ใหม่ -> เก่า) ไม่สนเลขลำดับไอดีแล้ว
             filtered.sort((a, b) => {
-                if (parseInt(a.studentId) !== parseInt(b.studentId)) {
-                    return parseInt(a.studentId) - parseInt(b.studentId);
-                }
                 const dateA = parseSheetDate(a.paymentDate) || new Date(0);
                 const dateB = parseSheetDate(b.paymentDate) || new Date(0);
-                return dateA - dateB;
+                return dateB - dateA; // เอา B ตั้งลบด้วย A วันล่าสุดจะลอยขึ้นบนสุด
             });
 
             const tbody = document.getElementById('dataTableBody');
