@@ -274,7 +274,6 @@
         // ฟังก์ชันพิเศษ: ช่วยแปลงวันที่จาก Google Sheets ให้กลายเป็นวัตถุ Date ที่ถูกต้อง ป้องกันบัคฟอร์แมตเพี้ยน
         function parseSheetDate(dateStr) {
             if (!dateStr) return null;
-            // กรณีส่งมาเป็นรูปแบบที่มีเวลาปน เช่น "2026-06-14T..." หรือ "2026-06-14 17:30" ให้ตัดเอาเฉพาะวันที่
             let cleanStr = String(dateStr).split(/[ T]/)[0]; 
             const parsedDate = new Date(cleanStr + "T00:00:00");
             return isNaN(parsedDate.getTime()) ? null : parsedDate;
@@ -307,11 +306,9 @@
                 });
             }
 
-            // [แก้ไขจุดนี้] เปลี่ยนระบบจัดเรียงข้อมูลใหม่: เอาวันที่ล่าสุดขึ้นก่อนเสมอ (ใหม่ -> เก่า) ไม่สนเลขลำดับไอดีแล้ว
+            // [แก้ไขจุดนี้เรียบร้อย] บังคับจัดเรียงข้อมูล: ตามเลขที่จาก น้อย -> มาก (1, 2, 3...) เสมอครับ
             filtered.sort((a, b) => {
-                const dateA = parseSheetDate(a.paymentDate) || new Date(0);
-                const dateB = parseSheetDate(b.paymentDate) || new Date(0);
-                return dateB - dateA; // เอา B ตั้งลบด้วย A วันล่าสุดจะลอยขึ้นบนสุด
+                return parseInt(a.studentId) - parseInt(b.studentId);
             });
 
             const tbody = document.getElementById('dataTableBody');
