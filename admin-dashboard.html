@@ -56,6 +56,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-wrap: wrap;
         }
         .filter-input-wrapper input[type="date"] {
             padding: 10px 16px;
@@ -71,6 +72,11 @@
         }
         .filter-input-wrapper input[type="date"]:focus {
             border-color: #3b82f6;
+        }
+        .date-separator {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #64748b;
         }
         .clear-filter-btn {
             background: #f1f5f9;
@@ -189,6 +195,9 @@
                 width: 100%;
                 box-sizing: border-box;
             }
+            .date-separator {
+                margin: 2px 0;
+            }
             th, td {
                 padding: 12px 14px;
                 font-size: 0.9rem;
@@ -210,7 +219,9 @@
         <div class="filter-section">
             <p class="filter-title">รายการชำระเงินทั้งหมด</p>
             <div class="filter-input-wrapper">
-                <input type="date" id="filterDate" onchange="filterAndRenderData()">
+                <input type="date" id="startDate" onchange="filterAndRenderData()" placeholder="เริ่ม">
+                <span class="date-separator">ถึง</span>
+                <input type="date" id="endDate" onchange="filterAndRenderData()" placeholder="สิ้นสุด">
                 <button class="clear-filter-btn" onclick="clearFilter()">แสดงทั้งหมด</button>
             </div>
         </div>
@@ -254,17 +265,40 @@
             }
         }
 
+        // ฟังก์ชันล้างค่าตัวกรองวันที่ทั้งหมด
         function clearFilter() {
-            document.getElementById('filterDate').value = '';
+            document.getElementById('startDate').value = '';
+            document.getElementById('endDate').value = '';
             filterAndRenderData();
         }
 
+        // ฟังก์ชันหัวใจหลัก: ตรวจจับและกรองแบบช่วงวันที่ (Date Range)
         function filterAndRenderData() {
-            const targetDate = document.getElementById('filterDate').value; 
+            const startVal = document.getElementById('startDate').value; 
+            const endVal = document.getElementById('endDate').value; 
             let filtered = [...rawData];
 
-            if (targetDate) {
-                filtered = filtered.filter(item => item.paymentDate === targetDate);
+            // แปลงค่าวันที่ที่กรอกให้กลายเป็นเลข Timestamp เพื่อนำไปเปรียบเทียบค่า (ช่วยป้องกันบัคเรื่อง format วันที่)
+            const startTimestamp = startVal ? new Date(startVal + "T00:00:00").getTime() : null;
+            const endTimestamp = endVal ? new Date(endVal + "T23:59:59").getTime() : null;
+
+            // คัดกรองข้อมูลตามช่วงเวลา
+            if (startTimestamp || endTimestamp) {
+                filtered = filtered.filter(item => {
+                    if (!item.paymentDate) return false;
+                    const currentTimestamp = new Date(item.paymentDate + "T00:00:00").getTime();
+                    
+                    // เงื่อนไข 1: เลือกแค่วันเริ่มต้นอย่างเดียว (เอาตั้งแต่วันนั้นเป็นต้นไป)
+                    if (startTimestamp && !endTimestamp) {
+                        return currentTimestamp >= startTimestamp;
+                    }
+                    // เงื่อนไข 2: เลือกแค่วันสิ้นสุดอย่างเดียว (เอาตั้งแต่วันแรกสุดจนถึงวันนั้น)
+                    if (!startTimestamp && endTimestamp) {
+                        return currentTimestamp <= endTimestamp;
+                    }
+                    // เงื่อนไข 3: เลือกครบทั้งสองฝั่ง (คัดกรองระหว่างกลาง)
+                    return currentTimestamp >= startTimestamp && currentTimestamp <= endTimestamp;
+                });
             }
 
             // ระบบจัดเรียงข้อมูล: เลขที่ (น้อย -> มาก) และ วันที่จ่าย (เก่า -> ใหม่)
@@ -279,7 +313,7 @@
             tbody.innerHTML = '';
 
             if (filtered.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#64748b; padding:20px;">ไม่พบข้อมูลในวันที่เลือก</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#64748b; padding:20px;">ไม่พบข้อมูลในช่วงวันที่เลือก</td></tr>';
                 return;
             }
 
