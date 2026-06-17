@@ -212,7 +212,7 @@
                 margin: 2px 0;
             }
             
-            /* [แก้ไขจุดนี้] ปิดระบบเลื่อนสไลด์ด้านข้าง และขยายตารางให้กางเต็มหน้าจอมือถือพอดี 100% */
+            /* ปิดระบบเลื่อนสไลด์ด้านข้าง และขยายตารางให้กางเต็มหน้าจอมือถือพอดี 100% */
             .table-responsive {
                 overflow-x: hidden !important; /* ห้ามสไลด์ออกนอกขอบจอ */
                 width: 100% !important;
@@ -246,8 +246,10 @@
 </head>
 <body>
     <script>
-        if (sessionStorage.getItem('isAdminLoggedIn') !== 'true') {
-            alert('กรุณาเข้าสู่ระบบก่อนครับ');
+        const permanentLogin = localStorage.getItem('isAdminLoggedIn');
+        const temporaryLogin = sessionStorage.getItem('isAdminLoggedIn');
+
+        if (permanentLogin !== 'true' && temporaryLogin !== 'true') {
             window.location.href = 'admin-login.html';
         }
     </script>
@@ -386,7 +388,9 @@
             });
         }
 
+        // แก้ไขฟังก์ชันตอนออกจากระบบให้ล้างค่าหมดทุกถังข้อมูล
         function logout() {
+            localStorage.removeItem('isAdminLoggedIn');
             sessionStorage.removeItem('isAdminLoggedIn');
             window.location.href = 'admin-login.html';
         }
