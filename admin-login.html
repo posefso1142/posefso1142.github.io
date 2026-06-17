@@ -9,28 +9,86 @@
     <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* สไตล์เพิ่มเติมเพื่อให้เนียนกับธีมเดิม */
+        /* ยัดความมินิมอล โมเดิร์น ลงตรงนี้ */
         .back-btn {
             display: block;
-            margin-top: 15px;
+            margin-top: 20px;
             text-align: center;
-            color: #666;
+            color: #a0a0a0;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            transition: color 0.2s ease;
         }
-        /* สไตล์สำหรับกล่องจดจำฉัน */
-        .remember-group {
+        .back-btn:hover {
+            color: #666;
+        }
+
+        /* ดีไซน์มินิมอลสำหรับตัวเลือกจดจำฉัน */
+        .remember-container {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 15px;
-            font-size: 0.95rem;
+            margin: 18px 0;
             cursor: pointer;
+            user-select: none;
+            font-size: 0.9rem;
+            color: #555;
+            transition: color 0.2s ease;
         }
-        .remember-group input {
+
+        .remember-container:hover {
+            color: #222;
+        }
+
+        /* ซ่อนหน้าตาเดิมของ checkbox ที่ไม่สวย */
+        .remember-container input {
+            position: absolute;
+            opacity: 0;
             cursor: pointer;
-            width: 16px;
-            height: 16px;
+            height: 0;
+            width: 0;
+        }
+
+        /* สร้างกล่องติ๊กแบบมินิมอลขึ้นมาเอง */
+        .custom-checkbox {
+            position: relative;
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            background-color: #fff;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 5px; /* มน ๆ กำลังดี */
+            margin-right: 10px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ตอนที่ Hover กล่อง */
+        .remember-container:hover input ~ .custom-checkbox {
+            border-color: #adadad;
+        }
+
+        /* ตอนที่ติ๊กเลือก (Checked) */
+        .remember-container input:checked ~ .custom-checkbox {
+            background-color: #000; /* ดำมินิมอล คลีนๆ หรือเปลี่ยนเป็นสีธีมเว็บได้เลย */
+            border-color: #000;
+        }
+
+        /* เครื่องหมายติ๊กถูกด้านใน */
+        .custom-checkbox::after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 5px;
+            top: 2px;
+            width: 4px;
+            height: 8px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        /* โชว์ติ๊กถูกตอนกดยืนยัน */
+        .remember-container input:checked ~ .custom-checkbox::after {
+            display: block;
         }
     </style>
 </head>
@@ -47,8 +105,9 @@
                 <input type="password" id="adminPass" placeholder="กรอกรหัสผ่าน" required>
             </div>
             
-            <label class="remember-group">
+            <label class="remember-container">
                 <input type="checkbox" id="rememberMe">
+                <span class="custom-checkbox"></span>
                 <span>จดจำฉันในระบบ</span>
             </label>
 
@@ -58,33 +117,26 @@
     </div>
 
     <script>
-        // --- ส่วนที่ 1: ตรวจสอบตอนเปิดหน้าเว็บ ---
-        // ถ้าเคยติ๊ก "จดจำฉัน" ไว้ (ข้อมูลอยู่ใน localStorage) ให้เด้งไปหน้า dashboard ทันที ไม่ต้องกรอกซ้ำ
+        // เช็กสถานะตอนเปิดเว็บ
         if (localStorage.getItem('isAdminLoggedIn') === 'true') {
             window.location.href = 'admin-dashboard.html';
         }
 
-        // --- ส่วนที่ 2: จัดการตอนกดปุ่ม Submit ---
         document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const user = document.getElementById('adminUser').value;
             const pass = document.getElementById('adminPass').value;
-            const rememberMe = document.getElementById('rememberMe').checked; // ดูว่าติ๊กจำไหม
+            const rememberMe = document.getElementById('rememberMe').checked;
 
-            // ตรวจสอบ Username และ Password ตามที่ตั้งค่าไว้
             if (user === 'ADMIN_SMTE20' && pass === 'SMTE_202020') {
-                
                 if (rememberMe) {
-                    // ถ้าติ๊ก "จดจำฉัน" -> เซฟลง localStorage (ปิดคอม/ปิดเบราว์เซอร์ ข้อมูลก็ยังอยู่)
                     localStorage.setItem('isAdminLoggedIn', 'true');
-                    sessionStorage.removeItem('isAdminLoggedIn'); // ล้างค่าชั่วคราวออกเพื่อไม่ให้ตีกัน
+                    sessionStorage.removeItem('isAdminLoggedIn');
                 } else {
-                    // ถ้าไม่ติ๊ก -> เซฟลง sessionStorage เหมือนเดิม (ปิดแท็บแล้วหาย)
                     sessionStorage.setItem('isAdminLoggedIn', 'true');
-                    localStorage.removeItem('isAdminLoggedIn'); // ล้างค่าถาวรออก
+                    localStorage.removeItem('isAdminLoggedIn');
                 }
-
-                window.location.href = 'admin-dashboard.html'; // ไปหน้าตารางข้อมูล
+                window.location.href = 'admin-dashboard.html';
             } else {
                 alert('Username หรือ Password ไม่ถูกต้อง!');
             }
