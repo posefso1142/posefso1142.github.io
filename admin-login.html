@@ -18,6 +18,20 @@
             text-decoration: none;
             font-size: 0.9rem;
         }
+        /* สไตล์สำหรับกล่องจดจำฉัน */
+        .remember-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+        .remember-group input {
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+        }
     </style>
 </head>
 <body>
@@ -32,20 +46,44 @@
                 <label for="adminPass">Password</label>
                 <input type="password" id="adminPass" placeholder="กรอกรหัสผ่าน" required>
             </div>
+            
+            <label class="remember-group">
+                <input type="checkbox" id="rememberMe">
+                <span>จดจำฉันในระบบ</span>
+            </label>
+
             <button type="submit">เข้าสู่ระบบ</button>
             <a href="index.html" class="back-btn">ย้อนกลับหน้าหลัก</a>
         </form>
     </div>
 
     <script>
+        // --- ส่วนที่ 1: ตรวจสอบตอนเปิดหน้าเว็บ ---
+        // ถ้าเคยติ๊ก "จดจำฉัน" ไว้ (ข้อมูลอยู่ใน localStorage) ให้เด้งไปหน้า dashboard ทันที ไม่ต้องกรอกซ้ำ
+        if (localStorage.getItem('isAdminLoggedIn') === 'true') {
+            window.location.href = 'admin-dashboard.html';
+        }
+
+        // --- ส่วนที่ 2: จัดการตอนกดปุ่ม Submit ---
         document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const user = document.getElementById('adminUser').value;
             const pass = document.getElementById('adminPass').value;
+            const rememberMe = document.getElementById('rememberMe').checked; // ดูว่าติ๊กจำไหม
 
             // ตรวจสอบ Username และ Password ตามที่ตั้งค่าไว้
             if (user === 'ADMIN_SMTE20' && pass === 'SMTE_202020') {
-                sessionStorage.setItem('isAdminLoggedIn', 'true');
+                
+                if (rememberMe) {
+                    // ถ้าติ๊ก "จดจำฉัน" -> เซฟลง localStorage (ปิดคอม/ปิดเบราว์เซอร์ ข้อมูลก็ยังอยู่)
+                    localStorage.setItem('isAdminLoggedIn', 'true');
+                    sessionStorage.removeItem('isAdminLoggedIn'); // ล้างค่าชั่วคราวออกเพื่อไม่ให้ตีกัน
+                } else {
+                    // ถ้าไม่ติ๊ก -> เซฟลง sessionStorage เหมือนเดิม (ปิดแท็บแล้วหาย)
+                    sessionStorage.setItem('isAdminLoggedIn', 'true');
+                    localStorage.removeItem('isAdminLoggedIn'); // ล้างค่าถาวรออก
+                }
+
                 window.location.href = 'admin-dashboard.html'; // ไปหน้าตารางข้อมูล
             } else {
                 alert('Username หรือ Password ไม่ถูกต้อง!');
