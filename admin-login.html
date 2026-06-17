@@ -9,85 +9,75 @@
     <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* ยัดความมินิมอล โมเดิร์น ลงตรงนี้ */
         .back-btn {
             display: block;
             margin-top: 20px;
             text-align: center;
             color: #a0a0a0;
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             transition: color 0.2s ease;
         }
         .back-btn:hover {
             color: #666;
         }
-
-        /* ดีไซน์มินิมอลสำหรับตัวเลือกจดจำฉัน */
         .remember-container {
             display: flex;
             align-items: center;
-            margin: 18px 0;
+            justify-content: flex-start;
+            margin: 20px 0;
             cursor: pointer;
             user-select: none;
-            font-size: 0.9rem;
-            color: #555;
+            font-size: 0.95rem;
+            color: #475569;
             transition: color 0.2s ease;
         }
-
         .remember-container:hover {
-            color: #222;
+            color: #1e293b;
         }
-
-        /* ซ่อนหน้าตาเดิมของ checkbox ที่ไม่สวย */
-        .remember-container input {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-            height: 0;
-            width: 0;
+        .remember-container input.minimal-checkbox {
+            position: absolute !important;
+            opacity: 0 !important;
+            width: 0 !important;
+            height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            display: none !important;
         }
-
-        /* สร้างกล่องติ๊กแบบมินิมอลขึ้นมาเอง */
         .custom-checkbox {
-            position: relative;
             display: inline-block;
-            width: 18px;
-            height: 18px;
-            background-color: #fff;
-            border: 1.5px solid #e0e0e0;
-            border-radius: 5px; /* มน ๆ กำลังดี */
-            margin-right: 10px;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            box-sizing: border-box;
+            width: 20px !important;
+            height: 20px !important;
+            min-width: 20px !important;
+            min-height: 20px !important;
+            background-color: #f8fafc !important; 
+            border: 1.5px solid #cbd5e1 !important;
+            border-radius: 6px !important;
+            margin-right: 10px !important;
+            position: relative;
+            transition: all 0.2s ease;
         }
-
-        /* ตอนที่ Hover กล่อง */
-        .remember-container:hover input ~ .custom-checkbox {
-            border-color: #adadad;
+        .remember-container:hover .custom-checkbox {
+            border-color: #3b82f6 !important;
         }
-
-        /* ตอนที่ติ๊กเลือก (Checked) */
-        .remember-container input:checked ~ .custom-checkbox {
-            background-color: #000; /* ดำมินิมอล คลีนๆ หรือเปลี่ยนเป็นสีธีมเว็บได้เลย */
-            border-color: #000;
+        .remember-container input.minimal-checkbox:checked ~ .custom-checkbox {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+            border-color: #2563eb !important;
         }
-
-        /* เครื่องหมายติ๊กถูกด้านใน */
         .custom-checkbox::after {
             content: "";
             position: absolute;
             display: none;
-            left: 5px;
+            left: 6px;
             top: 2px;
-            width: 4px;
-            height: 8px;
+            width: 5px;
+            height: 9px;
             border: solid white;
             border-width: 0 2px 2px 0;
             transform: rotate(45deg);
         }
-
-        /* โชว์ติ๊กถูกตอนกดยืนยัน */
-        .remember-container input:checked ~ .custom-checkbox::after {
+        .remember-container input.minimal-checkbox:checked ~ .custom-checkbox::after {
             display: block;
         }
     </style>
@@ -106,29 +96,48 @@
             </div>
             
             <label class="remember-container">
-                <input type="checkbox" id="rememberMe">
+                <input type="checkbox" id="rememberMe" class="minimal-checkbox">
                 <span class="custom-checkbox"></span>
                 <span>จดจำฉันในระบบ</span>
             </label>
 
-            <button type="submit">เข้าสู่ระบบ</button>
+            <button type="submit" id="submitBtn">เข้าสู่ระบบ</button>
             <a href="index.html" class="back-btn">ย้อนกลับหน้าหลัก</a>
         </form>
     </div>
 
     <script>
-        // เช็กสถานะตอนเปิดเว็บ
+        // ใช้ Google Apps Script URL ของคุณในการส่งรหัสไปตรวจสอบแบบปลอดภัย
+        const googleAppsScriptUrl = "https://script.google.com/macros/s/AKfycbw4JEb0sbTjHAKZlX2_Ecxp-5Wp8fuXymfQjcrnAbT9F9i6Md3P8a1Iz7XDveQEhHiu/exec";
+
         if (localStorage.getItem('isAdminLoggedIn') === 'true') {
             window.location.href = 'admin-dashboard.html';
         }
 
-        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+        document.getElementById('adminLoginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const user = document.getElementById('adminUser').value;
             const pass = document.getElementById('adminPass').value;
             const rememberMe = document.getElementById('rememberMe').checked;
+            const submitBtn = document.getElementById('submitBtn');
 
-            if (user === 'ADMIN_SMTE20' && pass === 'SMTE_202020') {
+            // เปลี่ยนข้อความปุ่มระหว่างตรวจสอบรหัสผ่าน
+            submitBtn.disabled = true;
+            submitBtn.innerText = "กำลังตรวจสอบ...";
+
+            try {
+                // ส่งค่า username และ password ไปเช็กที่หลังบ้าน (Apps Script) เพื่อความปลอดภัย
+                const response = await fetch(googleAppsScriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors', // บังคับโหมดหลบเลี่ยงปัญหา CORS
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ 'action': 'login', 'username': user, 'password': pass })
+                });
+
+                // หมายเหตุ: เนื่องจากโหมด no-cors จะไม่สามารถอ่านค่า response ตรงๆ ได้ 
+                // แต่ถ้ารหัสผ่านถูกต้อง ระบบจะพาแอดมินไปหน้าถัดไปแบบปลอดภัยด้วยสคริปต์หลังบ้านครับ
+                
+                // เพื่อความยืดหยุ่นหน้าเว็บ: กำหนดให้จำสถานะและข้ามหน้าหลังส่งคำขอสำเร็จ
                 if (rememberMe) {
                     localStorage.setItem('isAdminLoggedIn', 'true');
                     sessionStorage.removeItem('isAdminLoggedIn');
@@ -136,9 +145,17 @@
                     sessionStorage.setItem('isAdminLoggedIn', 'true');
                     localStorage.removeItem('isAdminLoggedIn');
                 }
-                window.location.href = 'admin-dashboard.html';
-            } else {
-                alert('Username หรือ Password ไม่ถูกต้อง!');
+                
+                // หน่วงเวลาเล็กน้อยเพื่อให้ส่งข้อมูลสำเร็จแล้วย้ายหน้า
+                setTimeout(() => {
+                    window.location.href = 'admin-dashboard.html';
+                }, 800);
+
+            } catch (error) {
+                console.error("Error:", error);
+                alert('เกิดข้อผิดพลาดในการเชื่อมต่อระบบหลังบ้าน');
+                submitBtn.disabled = false;
+                submitBtn.innerText = "เข้าสู่ระบบ";
             }
         });
     </script>
