@@ -1,164 +1,168 @@
 /* ==========================================================================
-   iOS 26 ULTRA GLASSMORPHIC - NEXT-GEN MINIMALIST VER. (style.css)
+   iOS 26 ULTRA GLASSMORPHIC - NEXT-GEN PREMIUM SQUIRCLE (style.css)
    ========================================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&display=swap');
 
 :root {
-    --ios-blue: #007aff;
-    --ios-purple: #6366f1; /* ปรับโทนให้อบอุ่น โมเดิร์นขึ้น */
-    --ios-pink: #ff2d55;
-    --ios-green: #34c759;
-    --dark-text: #1d1d1f;  /* สีสไตล์ Apple Dark Text */
-    --light-text: #86868b; /* สีสไตล์ Apple Secondary Text */
-    --glass-bg: rgba(255, 255, 255, 0.65); /* ลดความทึบลงเล็กน้อยเพื่อให้เห็น Background เบลอสวยขึ้น */
-    --glass-border: rgba(255, 255, 255, 0.6);  /* ขอบบางลงเพื่อความละมุน */
-    --radius-ios-lg: 28px; /* ปรับโค้งให้เข้าสัดส่วนมินิมอล */
-    --radius-ios-md: 16px;
-    --ios-spring: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); /* แอนิเมชันสมูทนุ่มลึก */
+    --ios-blue: #007aff !important;
+    --ios-purple: #5856d6 !important;
+    --ios-pink: #ff2d55 !important;
+    --ios-green: #34c759 !important;
+    --dark-text: #1c1c1e !important;
+    --light-text: #48484a !important;
+    --glass-bg: rgba(255, 255, 255, 0.72) !important;
+    --glass-border: rgba(255, 255, 255, 0.85) !important;
+    
+    /* 🌟 จัดให้! เพิ่มความมนสะใจ สไตล์ Squircle มินิมอล */
+    --radius-ios-lg: 38px !important; 
+    --radius-ios-md: 22px !important;
+    --ios-spring: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* สปริงแบบมีมิติดีดตัวสวยงาม */
 }
 
 * {
     margin: 0; padding: 0; box-sizing: border-box;
     font-family: 'Prompt', sans-serif; -webkit-tap-highlight-color: transparent;
-    letter-spacing: -0.01em; /* เพิ่มสไตล์ความพรีเมียมให้อักษร */
 }
 
 html, body { width: 100%; min-height: 100vh; overflow-x: hidden; }
 
 body {
     display: flex; justify-content: center; align-items: center;
-    background: radial-gradient(circle at 0% 0%, #f4f7ff 0%, #fbf5ff 50%, #fff5f7 100%); /* เปลี่ยนเป็นกระจายแบบนุ่มนวล */
+    /* 🌟 ปรับพื้นหลังใหม่: สีกระจายตัวชัดเจนขึ้น แยกมิติกล่องตรงกลางให้ลอยเด่น */
+    background: radial-gradient(circle at 10% 20%, rgba(213, 227, 255, 0.8) 0%, rgba(247, 215, 255, 0.7) 40%, rgba(255, 222, 233, 0.7) 80%), #f4f6fa !important;
     padding: clamp(16px, 4vw, 32px);
 }
 
 .container {
     background: var(--glass-bg);
-    backdrop-filter: blur(30px) saturate(210%); /* เพิ่มมิติความนวลของกระจก */
-    -webkit-backdrop-filter: blur(30px) saturate(210%);
-    border: 1px solid var(--glass-border);
-    /* เงาแบบ Layered Shadows ช่วยให้กล่องมีมิติลอยตัวสมจริง */
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02), 
-                0 30px 60px rgba(0, 0, 0, 0.06), 
-                inset 0 1px 1px rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(30px) saturate(220%);
+    -webkit-backdrop-filter: blur(30px) saturate(220%);
+    border: 2px solid var(--glass-border);
+    border-radius: var(--radius-ios-lg);
+    /* 🌟 เพิ่ม Layered Shadow แสงเงา 3 มิติ เพื่อความหรูหราทันสมัย */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04), 
+                0 30px 70px rgba(31, 38, 135, 0.08), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
     padding: clamp(32px, 6vw, 48px);
-    width: 100%; max-width: 460px; text-align: center;
-    animation: iosIntro 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    width: 100%; max-width: 480px; text-align: center;
+    animation: iosIntro 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
 }
 
 @keyframes iosIntro {
-    from { opacity: 0; transform: translateY(20px) scale(0.97); }
+    from { opacity: 0; transform: translateY(30px) scale(0.95); }
     to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-h1 { font-size: clamp(1.6rem, 5vw, 2.1rem); font-weight: 700; color: var(--dark-text); margin-bottom: 10px; }
-p { font-size: clamp(0.95rem, 2.6vw, 1rem); color: var(--light-text); font-weight: 400; line-height: 1.6; margin-bottom: 32px; }
-.form-group { margin-bottom: 20px; text-align: left; }
-label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: var(--dark-text); padding-left: 2px; }
+h1 { font-size: clamp(1.8rem, 5.5vw, 2.3rem); font-weight: 800; color: var(--dark-text); margin-bottom: 10px; letter-spacing: -0.5px; }
+p { font-size: clamp(0.95rem, 2.8vw, 1.05rem); color: var(--light-text); font-weight: 500; line-height: 1.5; margin-bottom: 30px; }
+.form-group { margin-bottom: 24px; text-align: left; }
+label { display: block; font-size: 0.95rem; font-weight: 700; margin-bottom: 10px; color: var(--dark-text); padding-left: 6px; }
 
-/* 🛠️ Input Styles */
+/* 🛠️ Input Styles - โค้งมน นวลตา มีมิติ */
 input[type="number"], input[type="date"], input {
-    width: 100%; height: 52px; padding: 0 16px;
-    border: 1px solid rgba(0, 0, 0, 0.08); /* ขอบบางลง ลดความกระด้าง */
+    width: 100% !important; height: 56px; padding: 0 20px;
+    border: 2px solid rgba(0, 0, 0, 0.06) !important;
     border-radius: var(--radius-ios-md);
-    font-size: 0.95rem; font-weight: 500; color: var(--dark-text);
-    background: rgba(255, 255, 255, 0.5);
+    font-size: 1rem; font-weight: 600; color: var(--dark-text);
+    background: rgba(255, 255, 255, 0.85) !important;
     outline: none; transition: var(--ios-spring);
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.01);
-    -webkit-appearance: none; appearance: none;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02) !important;
+    -webkit-appearance: none !important; appearance: none !important;
 }
 
 input:focus { 
-    border-color: var(--ios-blue); 
-    background: rgba(255, 255, 255, 0.95); 
-    box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1); /* วงเรืองแสงรอบโฟกัสสไตล์ iOS */
+    border-color: var(--ios-blue) !important; 
+    background: #ffffff !important; 
+    transform: scale(1.01); /* ยืดตัวเล็กน้อยเวลาพิมพ์ */
+    box-shadow: 0 8px 20px rgba(0, 122, 255, 0.1), inset 0 2px 4px rgba(0,0,0,0.01) !important;
 }
 
-/* 🛠️ ล็อคขนาดปฏิทิน iOS */
+/* 🛠️ Calendar fix */
 input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; margin: 0; padding: 0; }
-input[type="date"]::-webkit-datetime-edit { display: flex; width: 100%; overflow: hidden; }
+input[type="date"]::-webkit-datetime-edit { display: flex !important; width: 100% !important; overflow: hidden !important; }
 
-/* 🚀 Button Styles */
-.button-group, .button-container { display: flex; justify-content: center; gap: 12px; margin-top: 32px; width: 100%; }
+/* 🚀 Button Styles - สปริงเด้งดึ๋ง ทันสมัย */
+.button-group, .button-container { display: flex; justify-content: center; gap: 14px; margin-top: 32px; width: 100%; }
 
 button, .btn-primary, input[type="button"], input[type="submit"] {
-    flex: 1; width: 100%; height: 52px;
-    background: linear-gradient(135deg, #007aff 0%, #4f46e5 100%); /* ไล่เฉดสีที่พรีเมียมขึ้น */
-    color: #ffffff; border: none; border-radius: var(--radius-ios-md);
-    font-size: 1rem; font-weight: 600; cursor: pointer;
+    flex: 1; width: 100%; height: 56px;
+    background: linear-gradient(135deg, #2f80ed 0%, #007aff 50%, var(--ios-purple) 100%) !important; /* ไล่ 3 เฉดสุดล้ำ */
+    color: #ffffff !important; border: none; border-radius: var(--radius-ios-md);
+    font-size: 1.05rem; font-weight: 700; cursor: pointer;
     transition: var(--ios-spring);
     display: inline-flex; align-items: center; justify-content: center;
-    box-shadow: 0 8px 24px rgba(0, 122, 255, 0.2);
+    box-shadow: 0 10px 25px rgba(0, 122, 255, 0.25) !important;
 }
 
-button:hover, input[type="button"]:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0, 122, 255, 0.25); }
-button:active, input[type="button"]:active { transform: translateY(0) scale(0.98); }
-button:disabled { background: #d1d1d6; cursor: not-allowed; opacity: 0.7; transform: none; box-shadow: none; }
+button:hover, input[type="button"]:hover { transform: scale(1.05) translateY(-2px); filter: brightness(1.05); }
+button:active, input[type="button"]:active { transform: scale(0.95) translateY(0); }
+button:disabled { background: #d1d1d6 !important; cursor: not-allowed; opacity: 0.6; transform: none !important; box-shadow: none !important; }
 
 #backButton {
-    background: rgba(255, 255, 255, 0.6) !important; color: var(--dark-text) !important;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important; box-shadow: none !important;
+    background: #ffffff !important; color: var(--ios-pink) !important;
+    border: 2px solid rgba(255, 45, 85, 0.25) !important; box-shadow: none !important;
 }
-#backButton:hover { background: #ffffff !important; color: var(--ios-pink) !important; border-color: rgba(255, 45, 85, 0.2) !important; }
+#backButton:hover { background: rgba(255, 45, 85, 0.05) !important; border-color: var(--ios-pink) !important; }
 
-/* 📸 Upload Card */
+/* 📸 Upload Card - กล่องอัปโหลดแบบไอคอนลอย */
 .upload-card {
-    background: rgba(255, 255, 255, 0.4);
-    border: 1px dashed rgba(0, 122, 255, 0.4);
+    background: rgba(255, 255, 255, 0.5) !important;
+    border: 2px dashed rgba(0, 122, 255, 0.4) !important;
     border-radius: var(--radius-ios-lg);
-    padding: 32px 20px; cursor: pointer; position: relative;
+    padding: 34px 20px; cursor: pointer; position: relative;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    min-height: 170px; margin-top: 10px; transition: var(--ios-spring);
+    min-height: 190px; margin-top: 10px; transition: var(--ios-spring);
 }
-.upload-card:hover { border-style: solid; border-color: var(--ios-blue); background: rgba(255, 255, 255, 0.8); transform: translateY(-2px); }
+.upload-card:hover { border-style: solid !important; border-color: var(--ios-blue) !important; background: #ffffff !important; transform: scale(1.03); box-shadow: 0 15px 35px rgba(0, 122, 255, 0.1) !important; }
 
 #slipUpload, input[type="file"] {
-    position: absolute; width: 100%; height: 100%;
-    top: 0; left: 0; opacity: 0; cursor: pointer; z-index: 10;
+    position: absolute !important; width: 100% !important; height: 100% !important;
+    top: 0 !important; left: 0 !important; opacity: 0 !important; z-index: 10 !important;
 }
 
-.upload-icon { font-size: 2.5rem; margin-bottom: 12px; filter: grayscale(0.2); }
-.upload-hint { font-size: 0.95rem; font-weight: 600; color: var(--dark-text); }
-.upload-sub-hint { font-size: 0.8rem; color: var(--light-text); margin-top: 4px; font-weight: 400; }
+.upload-icon { font-size: 3.2rem; margin-bottom: 10px; transition: var(--ios-spring); }
+.upload-card:hover .upload-icon { transform: translateY(-4px) scale(1.1); }
+.upload-hint { font-size: 1.05rem; font-weight: 800; color: var(--dark-text); }
+.upload-sub-hint { font-size: 0.85rem; color: var(--light-text); margin-top: 6px; font-weight: 500; }
 
-.preview-container { display: none; width: 100%; max-width: 130px; margin-top: 14px; border-radius: var(--radius-ios-md); overflow: hidden; border: 4px solid #ffffff; box-shadow: 0 12px 24px rgba(0,0,0,0.1); z-index: 5; }
+.preview-container { display: none; width: 100%; max-width: 140px; margin-top: 12px; border-radius: var(--radius-ios-md); overflow: hidden; border: 4px solid #ffffff; box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 5; }
 #imagePreview { width: 100%; height: auto; display: block; }
 
-/* 💸 QR & Info Components */
+/* 💸 QR & Info Elements */
 .qr-box {
-    background: rgba(255, 255, 255, 0.6); border: 1px dashed rgba(0, 122, 255, 0.3);
-    padding: 28px 20px; border-radius: var(--radius-ios-lg); margin: 24px 0;
+    background: rgba(255, 255, 255, 0.8); border: 2px dashed rgba(0, 122, 255, 0.4) !important;
+    padding: 32px 20px; border-radius: var(--radius-ios-lg); margin: 24px 0; transition: var(--ios-spring);
 }
-.qr-box img { max-width: 100%; height: auto; border-radius: 18px; transition: var(--ios-spring); box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
-.qr-box img:hover { transform: scale(1.02); }
-.amount { display: inline-block; font-size: 2.2rem; font-weight: 700; color: var(--ios-blue); margin-top: 10px; letter-spacing: -0.02em; }
-.success-icon { font-size: 4rem; color: var(--ios-green); margin-bottom: 12px; }
+.qr-box:hover { border-style: solid !important; border-color: var(--ios-blue) !important; }
+.qr-box img { max-width: 100%; height: auto; border-radius: 24px; transition: var(--ios-spring); box-shadow: 0 6px 15px rgba(0,0,0,0.05); }
+.qr-box img:hover { transform: scale(1.05); box-shadow: 0 12px 30px rgba(0,0,0,0.12); }
+.amount { display: inline-block; font-size: 2.5rem; font-weight: 800; color: var(--ios-blue) !important; margin-top: 14px; letter-spacing: -1px; }
+.success-icon { font-size: 5rem; color: var(--ios-green); margin-bottom: 15px; animation: pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
-.info-group { background: rgba(255, 255, 255, 0.5); border: 1px solid rgba(0, 0, 0, 0.05); border-radius: var(--radius-ios-md); padding: 20px; margin-bottom: 24px; text-align: left; }
-.info-group p { margin-bottom: 10px; font-size: 0.95rem; color: var(--dark-text); font-weight: 500; }
+@keyframes pop { from { transform: scale(0.5); } to { transform: scale(1); } }
+
+.info-group { background: rgba(255, 255, 255, 0.9); border: 2px solid rgba(0, 0, 0, 0.04); border-radius: var(--radius-ios-md); padding: 26px; margin-bottom: 26px; text-align: left; box-shadow: 0 4px 15px rgba(0,0,0,0.01) !important; }
+.info-group p { margin-bottom: 14px; font-size: 1.1rem; color: var(--dark-text); font-weight: 600; }
 .info-group p:last-child { margin-bottom: 0; }
-.info-group strong { color: var(--light-text); width: 85px; font-weight: 500; display: inline-block; }
-.countdown-num { color: var(--ios-pink); font-weight: 700; }
+.info-group strong { color: var(--ios-purple); width: 95px; font-weight: 700; display: inline-block; }
+.countdown-num { color: var(--ios-pink) !important; font-weight: 800; }
 
-/* Responsive */
 @media (max-width: 480px) {
-    body { padding: 16px; }
-    .container { border-radius: 24px; padding: 28px 20px; }
-    .button-group { flex-direction: column; gap: 10px; }
+    body { padding: 14px; padding-top: 40px; }
+    .container { max-width: 100%; border-radius: 32px; padding: 32px 24px; }
+    .button-group { flex-direction: column; gap: 12px; }
     .button-group button { order: 1; } #backButton { order: 2; }
 }
 
-/* Admin Button Style */
+/* Admin Button */
 .admin-btn {
-    position: fixed; top: 24px; left: 24px; width: 42px; height: 42px;
-    background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px);
-    border: 1px solid rgba(0,0,0,0.05); border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); color: var(--ios-purple);
-    transition: var(--ios-spring); z-index: 1000;
+    position: fixed; top: 24px; left: 24px; width: 44px; height: 44px;
+    background-color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08); color: var(--ios-purple); transition: var(--ios-spring); z-index: 1000;
 }
-.admin-btn:hover { transform: scale(1.08); background-color: #ffffff; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08); }
-.admin-btn svg { width: 20px; height: 20px; }
+.admin-btn:hover { transform: scale(1.15) rotate(15deg); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); }
+.admin-btn svg { width: 24px; height: 24px; }
 
-/* ➕ ส่วนโอนเงินและคำอธิบายในวงเล็บ */
-#priceText { font-size: clamp(1.15rem, 4vw, 1.3rem); font-weight: 700; line-height: 1.5; margin-top: 8px; color: var(--dark-text); }
-.sub-text { display: block; font-size: 0.85rem; color: var(--light-text); font-weight: 400; margin-top: 4px; line-height: 1.4; }
+/* ➕ ส่วนปรับแต่งหน้าโอนเงินตามดีไซน์ใหม่ */
+#priceText { font-size: clamp(1.25rem, 4.5vw, 1.45rem); font-weight: 800; line-height: 1.5; margin-top: 12px; color: var(--dark-text); }
+.sub-text { display: block !important; font-size: clamp(0.85rem, 2.5vw, 0.95rem) !important; font-weight: 500 !important; margin-top: 6px; color: var(--light-text) !important; line-height: 1.4; }
