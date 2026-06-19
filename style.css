@@ -1,20 +1,29 @@
 /* ==========================================================================
-   iOS 26 ULTRA GLASSMORPHIC - HIGH CONTRAST VER. (ios-style.css / style.css)
+   iOS 26 ULTRA GLASSMORPHIC - PREVENT BUGS & MAX DIMENSION
    ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-    --ios-blue: #007aff !important;
-    --ios-purple: #5856d6 !important;
-    --ios-pink: #ff2d55 !important;
-    --ios-green: #34c759 !important;
-    --dark-text: #1c1c1e !important;
-    --light-text: #3a3a3c !important;
-    --glass-bg: rgba(255, 255, 255, 0.75) !important;
-    --glass-border: rgba(255, 255, 255, 0.9) !important;
-    --radius-ios-lg: 32px !important;
-    --radius-ios-md: 18px !important;
-    --ios-spring: all 0.5s cubic-bezier(0.25, 1, 0.3, 1.15);
+    --ios-blue: #007aff;
+    --ios-purple: #5856d6;
+    --ios-pink: #ff2d55;
+    --ios-green: #34c759;
+    --dark-text: #1c1c1e;
+    --light-text: #3a3a3c;
+    /* Glass Optimization */
+    --glass-bg: rgba(255, 255, 255, 0.45);
+    --glass-border: rgba(255, 255, 255, 0.6);
+    --radius-ios-lg: 38px;
+    --radius-ios-md: 20px;
+    /* Spring Animation */
+    --ios-spring: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 🌈 1. Animated Mesh Gradient Background */
+@keyframes meshGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 * {
@@ -22,186 +31,189 @@
     font-family: 'Prompt', sans-serif; -webkit-tap-highlight-color: transparent;
 }
 
-html, body { width: 100%; min-height: 100vh; overflow-x: hidden; }
-
 body {
+    width: 100%;
+    min-height: 100vh;
     display: flex; justify-content: center; align-items: center;
-    background: linear-gradient(135deg, #e5efff 0%, #f7e6ff 50%, #fff0f5 100%) !important;
-    padding: clamp(12px, 4vw, 32px);
+    background: linear-gradient(-45deg, #e5efff, #f7e6ff, #fff0f5, #e0f7fa);
+    background-size: 400% 400%;
+    animation: meshGradient 15s ease infinite;
+    padding: 20px;
+    perspective: 1000px; /* เพิ่มมิติ 3D */
 }
 
+/* 💎 2. Container "The Floating Crystal" */
 .container {
     background: var(--glass-bg);
-    backdrop-filter: blur(25px) saturate(200%);
-    -webkit-backdrop-filter: blur(25px) saturate(200%);
-    border: 2px solid var(--glass-border);
+    backdrop-filter: blur(35px) saturate(210%);
+    -webkit-backdrop-filter: blur(35px) saturate(210%);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-ios-lg);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08), 0 20px 40px rgba(0, 0, 0, 0.12) !important;
-    padding: clamp(28px, 6vw, 48px);
-    width: 100%; max-width: 480px; text-align: center;
-    animation: iosIntro 0.75s cubic-bezier(0.25, 1, 0.3, 1) forwards;
+    /* Multi-layered Shadow เพื่อมิติที่ลึกกว่าเดิม */
+    box-shadow: 
+        0 10px 40px rgba(0, 0, 0, 0.04),
+        0 25px 70px rgba(0, 0, 0, 0.07),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.4); 
+    padding: clamp(30px, 7vw, 55px);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    animation: iosIntro 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 @keyframes iosIntro {
-    from { opacity: 0; transform: translateY(40px) scale(0.94); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
+    0% { opacity: 0; transform: translateY(60px) rotateX(-10deg) scale(0.9); }
+    100% { opacity: 1; transform: translateY(0) rotateX(0) scale(1); }
 }
 
-h1 { font-size: clamp(1.8rem, 5.5vw, 2.4rem); font-weight: 800; color: var(--dark-text); margin-bottom: 8px; }
-p { font-size: clamp(0.95rem, 2.8vw, 1.05rem); color: var(--light-text); font-weight: 500; line-height: 1.5; margin-bottom: 28px; }
-.form-group { margin-bottom: 24px; text-align: left; }
-label { display: block; font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; color: var(--dark-text); padding-left: 4px; }
+/* ✨ เอฟเฟกต์แสงเงาด้านหลังกระเปาะปุ่ม (Blur Orb) */
+.container::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+    pointer-events: none;
+}
 
-/* 🛠️ บังคับปิดสไตล์ดั้งเดิมของระบบ iOS และจำกัดความกว้างให้พอดีกับกล่องแม่ */
-input[type="number"], input[type="date"], input {
-    width: 100% !important; height: 54px; padding: 0 16px;
-    border: 2px solid rgba(0, 0, 0, 0.15) !important;
+h1 { 
+    font-size: clamp(1.8rem, 6vw, 2.6rem); 
+    font-weight: 800; 
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, var(--dark-text) 0%, #666 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 12px; 
+}
+
+/* 🎹 Input Styling "Neumorphic-Glass" */
+input[type="number"], input[type="date"], input[type="text"], select {
+    width: 100%; height: 60px; padding: 0 20px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: var(--radius-ios-md);
-    font-size: 1rem; font-weight: 600; color: var(--dark-text);
-    background: rgba(255, 255, 255, 0.8) !important;
-    outline: none; transition: var(--ios-spring);
-    box-sizing: border-box !important; 
-    
-    /* ล้างค่าเริ่มต้นของ Safari บน iOS/iPadOS */
-    -webkit-appearance: none !important;
-    appearance: none !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-}
-
-/* 🛠️ ล็อคขนาดของกล่องย่อยข้างในปฏิทิน iOS ไม่ให้ดันอินพุตจนทะลุขอบ */
-input[type="date"]::-webkit-calendar-picker-indicator {
-    cursor: pointer;
-    margin: 0;
-    padding: 0;
-}
-
-input[type="date"]::-webkit-datetime-edit {
-    display: flex !important;
-    width: 100% !important;
-    overflow: hidden !important;
-}
-
-input:focus { 
-    border-color: var(--ios-blue) !important; 
-    background: #ffffff !important; 
-    transform: none !important; 
-}
-
-/* 🚀 จัดการสไตล์ชุดปุ่มกดหลักแบบมัดรวม (สมูทสปริง ไม่เหลี่ยม ไม่เบี้ยว) */
-.button-group, .button-container { display: flex; justify-content: center; gap: 14px; margin-top: 32px; width: 100%; }
-
-button, .btn-primary, input[type="button"], input[type="submit"] {
-    flex: 1; width: 100%; height: 54px;
-    background: linear-gradient(135deg, var(--ios-blue) 0%, var(--ios-purple) 100%) !important;
-    color: #ffffff !important; border: none; border-radius: var(--radius-ios-md);
-    font-size: 1.05rem; font-weight: 700; cursor: pointer;
-    transition: var(--ios-spring);
-    display: inline-flex; align-items: center; justify-content: center;
-    box-shadow: 0 8px 20px rgba(0, 122, 255, 0.15) !important;
-}
-
-button:hover, input[type="button"]:hover { transform: scale(1.04); filter: brightness(1.1); }
-button:active, input[type="button"]:active { transform: scale(0.96); }
-button:disabled { background: #aeaeae !important; cursor: not-allowed; opacity: 0.6; transform: none !important; }
-
-#backButton {
-    background: #ffffff !important; color: var(--ios-pink) !important;
-    border: 2px solid rgba(255, 45, 85, 0.4) !important;
-    box-shadow: none !important;
-}
-#backButton:hover { background: rgba(255, 45, 85, 0.1) !important; }
-
-/* 📸 🌟 เพิ่มคลาสแก้บัคสำหรับกล่องอัปโหลดภาพ (หน้า confirm.html) */
-.upload-card {
+    font-size: 1.1rem; font-weight: 600;
     background: rgba(255, 255, 255, 0.6) !important;
-    border: 2px dashed var(--ios-blue) !important;
-    border-radius: var(--radius-ios-lg);
-    padding: 30px 20px; cursor: pointer; position: relative;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    min-height: 180px; margin-top: 10px; transition: var(--ios-spring);
-}
-.upload-card:hover { border-style: solid !important; background: #ffffff !important; transform: scale(1.02); }
-
-/* ซ่อนปุ่มอินพุตอัปลักษณ์ดั้งเดิมของระบบ แล้วขยายให้คลิกได้เต็มกล่องอย่างแนบเนียน */
-#slipUpload, input[type="file"] {
-    position: absolute !important; width: 100% !important; height: 100% !important;
-    top: 0 !important; left: 0 !important; opacity: 0 !important;
-    cursor: pointer !important; z-index: 10 !important; padding: 0 !important; border: none !important;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    transition: var(--ios-spring);
 }
 
-.upload-icon { font-size: 3rem; margin-bottom: 8px; }
-.upload-hint { font-size: 1.05rem; font-weight: 800; color: var(--dark-text); }
-.upload-sub-hint { font-size: 0.85rem; color: var(--light-text); margin-top: 4px; font-weight: 500; }
-
-.preview-container { display: none; width: 100%; max-width: 140px; margin-top: 12px; border-radius: var(--radius-ios-md); overflow: hidden; border: 3px solid #ffffff; box-shadow: 0 8px 20px rgba(0,0,0,0.15); z-index: 5; }
-#imagePreview { width: 100%; height: auto; display: block; }
-
-/* 💸 ส่วนประกอบอื่นๆ */
-.qr-box {
-    background: rgba(255, 255, 255, 0.8); border: 3px dashed var(--ios-blue) !important;
-    padding: 32px 20px; border-radius: var(--radius-ios-lg); margin: 24px 0;
+input:focus {
+    background: #ffffff !important;
+    border-color: var(--ios-blue) !important;
+    box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15), 0 8px 20px rgba(0,0,0,0.05);
+    transform: translateY(-2px);
 }
-.qr-box img { max-width: 100%; height: auto; border-radius: 20px; transition: var(--ios-spring); }
-.qr-box img:hover { transform: scale(1.04); }
-.amount { display: inline-block; font-size: 2.3rem; font-weight: 800; color: var(--ios-blue) !important; margin-top: 14px; }
-.success-icon { font-size: 4.8rem; color: var(--ios-green); margin-bottom: 15px; }
 
-.info-group { background: rgba(255, 255, 255, 0.9); border: 2px solid rgba(0, 0, 0, 0.08); border-radius: var(--radius-ios-md); padding: 24px; margin-bottom: 26px; text-align: left; }
-.info-group p { margin-bottom: 12px; font-size: 1.1rem; color: var(--dark-text); font-weight: 600; }
-.info-group strong { color: var(--ios-purple); width: 90px; font-weight: 700; display: inline-block; }
-.countdown-num { color: var(--ios-pink) !important; font-weight: 800; }
+/* 🚀 3. Luxury Buttons with Shine Effect */
+button, .btn-primary {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #007aff, #5856d6) !important;
+    border-radius: var(--radius-ios-md);
+    transition: var(--ios-spring);
+    z-index: 1;
+}
 
+button::after {
+    content: '';
+    position: absolute;
+    top: -50%; left: -60%;
+    width: 50%; height: 200%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(30deg);
+    transition: 0.8s;
+}
+
+button:hover::after {
+    left: 120%;
+}
+
+button:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(88, 86, 214, 0.3) !important;
+}
+
+button:active { transform: scale(0.97); }
+
+/* 📂 4. Admin Dashboard Enhancement (Bento Style) */
+.admin-container {
+    max-width: 1000px !important;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.admin-card {
+    background: rgba(255, 255, 255, 0.7);
+    padding: 24px;
+    border-radius: 28px;
+    border: 1px solid var(--glass-border);
+    transition: var(--ios-spring);
+    text-align: left;
+}
+
+.admin-card:hover {
+    transform: translateY(-8px);
+    background: #fff;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+/* 📸 5. Upload Area (More Interactive) */
+.upload-card {
+    border: 2px dashed #c7c7cc !important;
+    background: rgba(255,255,255,0.4) !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.upload-card:hover {
+    border-color: var(--ios-blue) !important;
+    background: rgba(255,255,255,0.9) !important;
+    border-style: solid !important;
+}
+
+/* ⏲️ Countdown Timer Animation */
+.countdown-num {
+    display: inline-block;
+    animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+    from { transform: scale(1); opacity: 1; }
+    to { transform: scale(1.1); opacity: 0.8; }
+}
+
+/* 🏦 Payment Info Group "Deep Layer" */
+.info-group {
+    background: linear-gradient(180deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.4) 100%);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+}
+
+/* 📱 Responsive Adjustments */
 @media (max-width: 480px) {
-    body { padding: 12px; padding-top: 40px; }
-    .container { max-width: 100%; border-radius: 28px; padding: 28px 22px; }
-    .button-group { flex-direction: column; gap: 12px; }
-    .button-group button { order: 1; } #backButton { order: 2; }
+    .container { padding: 35px 24px; border-radius: 32px; }
+    h1 { font-size: 2rem; }
 }
 
-/* Admin Button Style for index.html */
-.admin-btn {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    width: 40px;
-    height: 40px;
-    background-color: #ffffff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    color: #4f46e5;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    z-index: 1000;
+/* 🔘 Custom Scrollbar for Luxury Feel */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.1);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
 }
 
-.admin-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+/* 💡 Status Labels */
+.status-badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
 }
-
-.admin-btn svg {
-    width: 24px;
-    height: 24px;
-}
-
-/* ==========================================================================
-   ➕ ส่วนที่อัปเดตเพิ่มเติม: ปรับแต่งหน้าโอนเงินให้สวยงามและแยกบรรทัดในวงเล็บ
-   ========================================================================== */
-#priceText {
-    font-size: clamp(1.2rem, 4vw, 1.4rem);
-    font-weight: 800;
-    line-height: 1.5;
-    margin-top: 10px;
-}
-
-/* จัดสไตล์ข้อความอธิบายในวงเล็บให้ดีดตัวลงบรรทัดใหม่ตามที่ขอ */
-.sub-text {
-    display: block !important;
-    font-size: clamp(0.85rem, 2.5vw, 0.95rem) !important;
-    font-weight: 500 !important;
-    margin-top: 6px;
-    line-height: 1.4;
-}
+.status-pending { background: #fff9e6; color: #ffcc00; }
+.status-success { background: #e6fff0; color: var(--ios-green); }
